@@ -1,0 +1,155 @@
+<!DOCTYPE html> 
+<html lang="en" manifest="web.appcache"> 
+<head> 
+<meta charset="utf-8" />
+<title>Checklist</title>
+
+<!-- Meta Viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<!-- CSS styles -->
+<link rel="stylesheet" href="css/styles.css" />
+
+<!-- JavaScript libs -->
+<script src="js/utils/tap.js"></script>
+<script src="js/libs/zepto/zepto-min.js"></script>
+<script src="js/libs/underscore/underscore-min.js"></script>
+<script src="js/libs/backbone/backbone-min.js"></script>
+<script src="js/utils/backbone.localStorage-min.js"></script>
+<script src="js/main.js"></script>
+
+<!-- iOS prevent tel number format detection -->
+<meta name="format-detection" content="telephone=no" />
+
+<!-- iOS home screen icons -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/iOS-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/iOS-72.png" />
+<link rel="apple-touch-icon-precomposed" href="images/iOS-57.png" />
+<link rel="icon" href="images/iOS-57.png" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href="" />
+
+<!-- Info -->
+<meta name="description" content="Checklist is an easy to use web app for creating quick to-do or shopping lists." />
+<meta name="author" content="Alex Gibson" />
+
+<!-- Humans.txt -->
+<link type="text/plain" rel="author" href="humans.txt" />
+
+<!-- Async Google Analytics
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXX-X']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script');
+ga.src = ('https:' == document.location.protocol ?
+    'https://ssl' : 'http://www') +
+    '.google-analytics.com/ga.js';
+ga.setAttribute('async', 'true');
+document.documentElement.firstChild.appendChild(ga);
+})();
+</script> -->
+
+</head>
+
+<body>
+<div id="app-view"></div>
+
+<!-- iOS full screen header template -->
+<script type="text/template" id="ios-header-template">
+	<header role="banner">
+		<h1>Checklist</h1>
+	</header> 
+</script>
+
+<!-- Empty list template -->
+<script type="text/template" id="empty-list-template">
+	<% if (total === 0) { %>
+        <li class="empty"><span id="arrow">&uarr;</span></li>
+		<li class="empty">Add an item to get started.</li>
+	<% } %> 		
+</script>
+
+<!-- List template -->
+<script type="text/template" id="list-template">
+	<form id="inputarea">
+		<input type="text" id="new-item-name" placeholder="Add an item&hellip;">
+		<button type="button" id="add-button">Add</button>
+	</form>
+	<div id="wrapper">
+		<div id="scroller">
+			<div id="content">
+          		<ul id="todo-list">
+          			<li id="todo-stats"></li>
+          		</ul>
+          		<ul id="empty-list">
+          		</ul>
+          		<div id="settings-bar"></div>
+          	</div>
+		</div>			
+	</div>
+	<p class="hide" id="edit_label">Edit item</p>
+	<p class="hide" id="settings_label">Settings</p>
+</script>
+
+<!-- List item template -->
+<script type="text/template" id="item-template">
+	<input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+	<label class="item-text <%= done ? 'done' : '' %>"></label>
+	<!--<% if (note !== '') { %> &hellip; <% } %>-->
+	<div class="edit" role="button" aria-labelledby="edit_label" tabindex="0"></div>
+</script>
+
+<!-- Completed / remaining bar template -->
+<script type="text/template" id="totals-template">
+    <% if (total) { %>
+			<span id="total-value">Completed: <%= done %></span>
+			<span id="remaining-value">Remaining: <%= remaining %></span>
+	<% } %>
+</script>
+
+<!-- Settings menu button template -->
+<script type="text/template" id="settings-bar-template">
+	<% if (total) { %>
+		<div class="settings" role="button" aria-labelledby="settings_label" tabindex="0"></div>
+	<% } %>
+</script>
+
+<!-- Edit template -->
+<script type="text/template" id="edit-template">
+	<form id="editform">
+		<fieldset>
+			<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
+			<button id="save-edit" type="button">Done</button>
+		</fieldset>
+		<ul>
+			<li>
+				<input class="check" id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+				<label onclick for="edit-completed" class="item-text">Completed</label>
+			</li>
+			<li>
+				<input type="checkbox" name="delete" id="delete" />
+				<label onclick id="delete-label" for="delete">Delete item</label>
+			</li>
+		</ul>
+		<textarea id="note" placeholder="Add a note&hellip;"><%= note %></textarea>
+	</form>
+</script>
+
+<!-- Settings template -->
+<script type="text/template" id="settings-template">
+	<fieldset id="settingsform">
+		<button type="button" id="close-settings">Done</button>
+	</fieldset>
+	<ul class="settings-list">
+		<li role="button" id="deletechecked" tabindex="0"><span>Clear completed</span></li>
+		<li id="sendmail"><a href="mailto:" id="maillink">Email list</a></li>
+		<li role="button" id="deleteall" tabindex="0"><span>Delete all</span></li>
+	</ul>
+</script>
+
+</body>
+</html> 
