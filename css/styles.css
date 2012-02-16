@@ -319,7 +319,7 @@ a:visited, a:hover, a:active, a:focus {
 	padding: 11px 0 10px 10px;
 }
 
-.edit-form ul > li > span:hover, .edit-form ul > li > span:active, .edit-form ul > li > label:hover, .edit-form ul > li > label:active {
+.edit-form ul > li > label:hover, .edit-form ul > li > label:active {
 	color: #236ED8;
 	cursor: pointer;
 }
@@ -328,7 +328,7 @@ a:visited, a:hover, a:active, a:focus {
 	color: #236ED8;
 }
 
-.settings-list > li > span:hover, .settings-list > li > label:active {
+.settings-list > li > label:active {
 	color: #236ED8;
 	cursor: pointer;
 }

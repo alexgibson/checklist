@@ -159,15 +159,17 @@ $(function() {
 		settingsTemplate: _.template($('#settings-template').html()),
 
 		events: {
-			'click #deletechecked'		: 'clearCompleted',
-			'click #deleteall'			: 'deleteAll',
-			'tap #close-settings'		: 'closeSettings',
-			'keypress #close-settings'	: 'closeOnEnter'
+			'click #clear-completed'		: 'clearCompleted',
+			'click #delete-all'				: 'deleteAll',
+			'tap #close-settings'			: 'closeSettings',
+			'keypress #close-settings'		: 'closeOnEnter'
 		},
 
 		initialize: function(options) {
 			this.bind('rendered', this.afterRender, this);
 			this.collection = options.collection;
+			this.clearCompletedFlag = false;
+			this.deleteAllFlag = false;
 		},
 
 		render: function() {
@@ -180,22 +182,11 @@ $(function() {
 		},
 
 		clearCompleted: function() {
-			if (confirm('Clear completed items?')) {
-				_.each(this.collection.done(), function(model) { model.destroy(); });
-				router.navigate('', {trigger: true});
-				
-			}
-			return false;
+			this.clearCompletedFlag = !this.clearCompletedFlag;
 		},
 
 		deleteAll: function() {
-			if (confirm('Delete all items?')) {
-				while (this.collection.models.length > 0) {
-					this.collection.models[0].destroy();
-				}
-				router.navigate('', {trigger: true});
-			}
-			return false;
+			this.deleteAllFlag = !this.deleteAllFlag;
 		},
 
 		updateEmailLink: function() {
@@ -207,14 +198,26 @@ $(function() {
 			$('#maillink').attr('href', mail);
 			return false;
 		},
+		
+		updateCollection: function() {
+			if (this.clearCompletedFlag) {
+				_.each(this.collection.done(), function(model) { model.destroy(); });
+			}
+			if (this.deleteAllFlag) {
+				while (this.collection.models.length > 0) {
+					this.collection.models[0].destroy();
+				}
+			}
+			router.navigate("", {trigger: true});
+		},
 
 		closeSettings: function() {
-			router.navigate("", {trigger: true});
+			this.updateCollection();
 		},
 		
 		closeOnEnter: function(e) {
 			if (e.keyCode != 13) return;
-			router.navigate("", {trigger: true});
+			this.updateCollection();
 		},
 
 		destroy: function(){
@@ -234,7 +237,7 @@ $(function() {
 			'click #delete'			: 'deleteItem',
 			'keypress #edit-field'	: 'saveOnEnter',
 			'keypress #save-edit'	: 'saveOnEnter',
-			'click .check'			: 'toggleDone'
+			'click #edit-completed'	: 'toggleDone'
 		},
 
 		initialize: function(options) {
