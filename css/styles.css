@@ -331,11 +331,7 @@ a:visited, a:hover, a:active, a:focus {
 
 .edit-form ul > li > label {
 	width: auto;
-	padding: 11px 0 10px 0;
-}
-
-.edit-form ul > li > input[type=checkbox] {
-	float: right;
+	padding: 11px 0 10px 10px;
 }
 
 .edit-form ul > li > span:hover, .edit-form ul > li > span:active, .edit-form ul > li > label:hover, .edit-form ul > li > label:active {
