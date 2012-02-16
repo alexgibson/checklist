@@ -7,6 +7,19 @@
 <!-- Meta Viewport -->
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
+<!-- App info -->
+<meta name="description" content="Checklist is an easy to use web app for creating quick to-do or shopping lists." />
+<meta name="author" content="Alex Gibson" />
+
+<!-- Humans.txt -->
+<link type="text/plain" rel="author" href="humans.txt" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href="http://miniapps.co.uk/checklist/" />
+
+<!-- iOS prevent tel number format detection -->
+<meta name="format-detection" content="telephone=no" />
+
 <!-- CSS styles -->
 <link rel="stylesheet" href="css/styles.css" />
 
@@ -18,24 +31,11 @@
 <script src="js/utils/backbone.localStorage-min.js"></script>
 <script src="js/main.js"></script>
 
-<!-- iOS prevent tel number format detection -->
-<meta name="format-detection" content="telephone=no" />
-
 <!-- iOS home screen icons -->
 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/iOS-114.png" />
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/iOS-72.png" />
 <link rel="apple-touch-icon-precomposed" href="images/iOS-57.png" />
 <link rel="icon" href="images/iOS-57.png" />
-
-<!-- Canonical URL -->
-<link rel="canonical" href="" />
-
-<!-- Info -->
-<meta name="description" content="Checklist is an easy to use web app for creating quick to-do or shopping lists." />
-<meta name="author" content="Alex Gibson" />
-
-<!-- Humans.txt -->
-<link type="text/plain" rel="author" href="humans.txt" />
 
 <!-- Async Google Analytics
 <script type="text/javascript">
@@ -75,7 +75,7 @@ document.documentElement.firstChild.appendChild(ga);
 
 <!-- List template -->
 <script type="text/template" id="list-template">
-	<form id="inputarea">
+	<form id="new-item-bar">
 		<input type="text" id="new-item-name" placeholder="Add an item&hellip;">
 		<button type="button" id="add-button">Add</button>
 	</form>
@@ -120,19 +120,22 @@ document.documentElement.firstChild.appendChild(ga);
 
 <!-- Edit template -->
 <script type="text/template" id="edit-template">
-	<form id="editform">
+	<form class="edit-form">
 		<fieldset>
 			<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
 			<button id="save-edit" type="button">Done</button>
 		</fieldset>
 		<ul>
 			<li>
-				<input class="check" id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
 				<label onclick for="edit-completed" class="item-text">Completed</label>
+				<input class="check" id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
 			</li>
 			<li>
-				<input type="checkbox" name="delete" id="delete" />
 				<label onclick id="delete-label" for="delete">Delete item</label>
+				<input type="checkbox" name="delete" id="delete" />
+			</li>
+			<li>
+				<a href="mailto:" id="share-item-link">Share item</a>
 			</li>
 		</ul>
 		<textarea id="note" placeholder="Add a note&hellip;"><%= note %></textarea>
@@ -146,7 +149,7 @@ document.documentElement.firstChild.appendChild(ga);
 	</fieldset>
 	<ul class="settings-list">
 		<li role="button" id="deletechecked" tabindex="0"><span>Clear completed</span></li>
-		<li id="sendmail"><a href="mailto:" id="maillink">Email list</a></li>
+		<li id="sendmail"><a href="mailto:" id="maillink">Share list</a></li>
 		<li role="button" id="deleteall" tabindex="0"><span>Delete all</span></li>
 	</ul>
 </script>

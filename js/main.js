@@ -1,5 +1,7 @@
 $(function() {
 
+	var items, appView, router, tap;
+
 	//Models & Collections
 
 	var Item = Backbone.Model.extend({
@@ -7,7 +9,7 @@ $(function() {
 		defaults: function() {
       		return {
         		done:  false,
-        		order: Items.nextOrder(),
+        		order: items.nextOrder(),
         		note: ''
       		};
     	},
@@ -68,7 +70,7 @@ $(function() {
 			var listView = new ListView({collection: this.collection});
 			this.appView.showView(listView);
 			this.collection.fetch();
-			$('#new-item-name').val(decodeURIComponent(id));
+			$('#new-item-name').val(decodeURIComponent(id.replace(/\+/g, ' ')));
 		},
 
 		edit: function(id) {
@@ -77,6 +79,7 @@ $(function() {
 			if (item !== undefined) {
 				var editView = new EditView({model: item});
 				this.appView.showView(editView);
+				editView.trigger('rendered');
 			} else {
 				router.navigate('', {trigger: true});
 			}
@@ -110,7 +113,8 @@ $(function() {
 		events: {
 			'click .check' 		: 'toggleDone',
 			'tap .item-text' 	: 'toggleDone',
-			'tap .edit' 		: 'editItem'
+			'tap .edit' 		: 'editItem',
+			'keypress .edit'	: 'editOnEnter'
 		},
 
 		initialize: function() {
@@ -136,6 +140,11 @@ $(function() {
 		editItem: function() {
 			router.navigate('edit/' + this.model.get('id'), {trigger: true});
 		},
+		
+		editOnEnter: function(e) {
+			if (e.keyCode != 13) return;
+			router.navigate('edit/' + this.model.get('id'), {trigger: true});
+		},
 
 		remove: function() {
 			$(this.el).unbind();
@@ -151,9 +160,10 @@ $(function() {
 		settingsTemplate: _.template($('#settings-template').html()),
 
 		events: {
-			'tap #deletechecked':  'clearCompleted',
-			'tap #deleteall':  'deleteAll',
-			'tap #close-settings':  'closeSettings'
+			'tap #deletechecked'		: 'clearCompleted',
+			'tap #deleteall'			: 'deleteAll',
+			'tap #close-settings'		: 'closeSettings',
+			'keypress #close-settings'	: 'closeOnEnter'
 		},
 
 		initialize: function(options) {
@@ -201,6 +211,11 @@ $(function() {
 		closeSettings: function() {
 			router.navigate("", {trigger: true});
 		},
+		
+		closeOnEnter: function(e) {
+			if (e.keyCode != 13) return;
+			router.navigate("", {trigger: true});
+		},
 
 		destroy: function(){
 			this.unbind();
@@ -215,21 +230,27 @@ $(function() {
 		editTemplate: _.template($('#edit-template').html()),
 
 		events: {
-			'tap #save-edit':  		'saveItem',
-			'tap #delete':			'deleteItem',
-			'tap #delete-label':	'deleteItem',
-			'keypress #edit-field': 'saveOnEnter',
-			'click .check':			'toggleDone'
+			'tap #save-edit'		: 'saveItem',
+			'tap #delete'			: 'deleteItem',
+			'tap #delete-label'		: 'deleteItem',
+			'keypress #edit-field'	: 'saveOnEnter',
+			'keypress #save-edit'	: 'saveOnEnter',
+			'click .check'			: 'toggleDone'
 		},
 
 		initialize: function(options) {
 			this.model = options.model;
+			this.bind('rendered', this.afterRender, this);
 			this.deleted = false;
 		},
 
 		render: function() {
 			$(this.el).html(this.editTemplate(this.model.toJSON()));
 			return this;
+		},
+		
+		afterRender: function() {
+			this.updateShareLink();
 		},
 
 		saveItem: function() {
@@ -258,6 +279,17 @@ $(function() {
 		deleteItem: function() {
 			this.deleted = !this.deleted;
 		},
+		
+		updateShareLink: function() {
+			var mail = 'mailto:?', 
+				subject = 'New item for your checklist', 
+				item = '';
+			item = this.model.get('text');
+			mail += 'subject=' + encodeURIComponent(subject);
+			mail += '&body=' + 'http://miniapps.co.uk/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
+			$('#share-item-link').attr('href', mail);
+			return false;
+		},
 
 		destroy: function(){
 			this.unbind();
@@ -276,10 +308,10 @@ $(function() {
 		settingsTemplate: _.template($('#settings-bar-template').html()),
 
 		events: {
-			'keypress #new-item-name':	'createOnEnter',
-			'tap #add-button':		'createOnSubmit',
-			'tap .settings':		'openSettings'/*,
-			'orientationchange':	'setOrientation'*/
+			'keypress #new-item-name'	: 'createOnEnter',
+			'tap #add-button'			: 'createOnSubmit',
+			'tap .settings'				: 'openSettings',
+			'keypress .settings'		: 'settingsOnEnter'
 		},
 
 		initialize: function(options) {
@@ -336,28 +368,11 @@ $(function() {
 		openSettings: function() {
 			router.navigate('settings', {trigger: true});
 		},
-
-		/*setOrientation: function() {
-			var contentHeight = window.innerHeight - config.LAYOUT.chromeHeight;
-			if (!config.TEST.hasOverflowScroll) { return; }
-			$('#wrapper').css('height', contentHeight + 'px');
-			$('#scroller').css('height', contentHeight + 'px');
-			setTimeout(function () {
-				$('#content').css('min-height', (contentHeight + 2) + 'px');
-			}, 100);
+		
+		settingsOnEnter: function(e) {
+			if (e.keyCode != 13) return;
+			router.navigate('settings', {trigger: true});
 		},
-
-		setOverflowScroll: function() {
-			var wrapper = $('#wrapper'),
-				scroller = $('#scroller');
-			if (!config.TEST.hasOverflowScroll) { return; }
-			this.setOrientation();
-			wrapper.attr('class', 'overflow-scroll');
-			scroller.attr('class', 'overflow-scroll');
-			wrapper.css('padding-top', '0');
-			wrapper.css('top', '44px');
-			$('#inputarea').on('touchmove', function (e) { e.preventDefault(); }, false);		
-		},*/
 
 		destroy: function(){
 			this.unbind();
@@ -371,25 +386,24 @@ $(function() {
 
 	//Initialize app
 
-	//Set apple startup image
 	var setStartupImage = function () {
-			var head = document.getElementsByTagName('head')[0], filename, link;
-			if (navigator.platform === 'iPad') {
-				filename = window.orientation !== 90 || window.orientation === -90 ? 'splash-1024x748.png' : 'splash-768x1004.png';
-			} else {
-				filename = window.devicePixelRatio === 2 ? 'splash-640x920.png' : 'splash-320x460.png';
-			}
-			link = document.createElement('link');
-			link.setAttribute('rel', 'apple-touch-startup-image');
-			link.setAttribute('href', 'images/' + filename);
-			head.appendChild(link);
+		var head = document.getElementsByTagName('head')[0], filename, link;
+		if (navigator.platform === 'iPad') {
+			filename = window.orientation !== 90 || window.orientation === -90 ? 'splash-1024x748.png' : 'splash-768x1004.png';
+		} else {
+			filename = window.devicePixelRatio === 2 ? 'splash-640x920.png' : 'splash-320x460.png';
+		}
+		link = document.createElement('link');
+		link.setAttribute('rel', 'apple-touch-startup-image');
+		link.setAttribute('href', 'images/' + filename);
+		head.appendChild(link);
 	};
 
 	setStartupImage();
-	var Items = new ItemList;
-	var appView = new ViewManager();
-	var router = new AppRouter({collection: Items, appView: appView});
-	var tap = new Tap(document.getElementById('app-view'));
+	items = new ItemList;
+	appView = new ViewManager();
+	router = new AppRouter({collection: items, appView: appView});
+	tap = new Tap(document.getElementById('app-view'));
 	Backbone.history.start();
 
 });
