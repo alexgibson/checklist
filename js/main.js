@@ -283,10 +283,12 @@ $(function() {
 		updateShareLink: function() {
 			var mail = 'mailto:?', 
 				subject = 'New item for your checklist', 
-				item = '';
-			item = this.model.get('text');
+				item = this.model.get('text');
+				note = this.model.get('note');
+
 			mail += 'subject=' + encodeURIComponent(subject);
 			mail += '&body=' + 'http://miniapps.co.uk/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
+			mail += encodeURIComponent('\n\n' + note);
 			$('#share-item-link').attr('href', mail);
 			return false;
 		},
