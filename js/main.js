@@ -9,8 +9,7 @@ $(function() {
 		defaults: function() {
       		return {
         		done:  false,
-        		order: items.nextOrder(),
-        		note: ''
+        		order: items.nextOrder()
       		};
     	},
 
@@ -160,8 +159,8 @@ $(function() {
 		settingsTemplate: _.template($('#settings-template').html()),
 
 		events: {
-			'tap #deletechecked'		: 'clearCompleted',
-			'tap #deleteall'			: 'deleteAll',
+			'click #deletechecked'		: 'clearCompleted',
+			'click #deleteall'			: 'deleteAll',
 			'tap #close-settings'		: 'closeSettings',
 			'keypress #close-settings'	: 'closeOnEnter'
 		},
@@ -184,8 +183,9 @@ $(function() {
 			if (confirm('Clear completed items?')) {
 				_.each(this.collection.done(), function(model) { model.destroy(); });
 				router.navigate('', {trigger: true});
-				return false;
+				
 			}
+			return false;
 		},
 
 		deleteAll: function() {
@@ -194,8 +194,8 @@ $(function() {
 					this.collection.models[0].destroy();
 				}
 				router.navigate('', {trigger: true});
-				return false;
 			}
+			return false;
 		},
 
 		updateEmailLink: function() {
@@ -231,8 +231,7 @@ $(function() {
 
 		events: {
 			'tap #save-edit'		: 'saveItem',
-			'tap #delete'			: 'deleteItem',
-			'tap #delete-label'		: 'deleteItem',
+			'click #delete'			: 'deleteItem',
 			'keypress #edit-field'	: 'saveOnEnter',
 			'keypress #save-edit'	: 'saveOnEnter',
 			'click .check'			: 'toggleDone'
@@ -259,8 +258,7 @@ $(function() {
 				this.model.destroy();
 			} else {
 				this.input = $('#edit-field').val();
-				this.note = $('#note').val();
-				this.model.save({text: this.input, note: this.note});
+				this.model.save({text: this.input});
 			}
 			router.navigate("", {trigger: true});
 		},
@@ -284,11 +282,9 @@ $(function() {
 			var mail = 'mailto:?', 
 				subject = 'New item for your checklist', 
 				item = this.model.get('text');
-				note = this.model.get('note');
 
 			mail += 'subject=' + encodeURIComponent(subject);
 			mail += '&body=' + 'http://miniapps.co.uk/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
-			mail += encodeURIComponent('\n\n' + note);
 			$('#share-item-link').attr('href', mail);
 			return false;
 		},

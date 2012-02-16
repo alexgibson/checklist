@@ -134,11 +134,10 @@ document.documentElement.firstChild.appendChild(ga);
 				<input type="checkbox" name="delete" id="delete" />
 				<label onclick id="delete-label" for="delete">Delete item</label>
 			</li>
-			<li>
-				<a href="mailto:" id="share-item-link">Share item</a>
+			<li class="share">
+				<a href="mailto:" id="share-item-link">Share this item</a>
 			</li>
 		</ul>
-		<textarea id="note" placeholder="Add a note&hellip;"><%= note %></textarea>
 	</form>
 </script>
 
@@ -149,7 +148,7 @@ document.documentElement.firstChild.appendChild(ga);
 	</fieldset>
 	<ul class="settings-list">
 		<li role="button" id="deletechecked" tabindex="0"><span>Clear completed</span></li>
-		<li id="sendmail"><a href="mailto:" id="maillink">Share list</a></li>
+		<li id="sendmail"><a href="mailto:" id="maillink">Email list</a></li>
 		<li role="button" id="deleteall" tabindex="0"><span>Delete all</span></li>
 	</ul>
 </script>
