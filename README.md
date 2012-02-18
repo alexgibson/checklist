@@ -12,17 +12,17 @@ Features
 - Batch delete items.
 - Email sharing features.
 - Share items via URL.
-- Remaining item count.
-- Runs offline.
+- Completed & remaining item count.
+- Works offline.
 
 Share items via URL using: #add/your+item+here
 
 Frameworks & libraries
 ---------------------------------------
 
-Backbone.js http://documentcloud.github.com/backbone/
-Underscore.js http://documentcloud.github.com/underscore/
-Zepto.js http://zeptojs.com/
+- Backbone.js http://documentcloud.github.com/backbone/
+- Underscore.js http://documentcloud.github.com/underscore/
+- Zepto.js http://zeptojs.com/
 
 	
 License
