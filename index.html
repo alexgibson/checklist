@@ -133,10 +133,10 @@ document.documentElement.firstChild.appendChild(ga);
 				<input type="checkbox" id="delete" />
 				<label onclick id="delete-label" for="delete">Delete item</label>
 			</li>
-			<li class="share">
-				<a href="mailto:" id="share-item-link">Share item</a>
-			</li>
 		</ul>
+		<div class="share">
+			<a href="mailto:" id="share-item-link">Share this item</a>
+		</div>
 	</form>
 </script>
 
@@ -154,8 +154,10 @@ document.documentElement.firstChild.appendChild(ga);
 			<input type="checkbox" id="delete-all" />
 			<label onclick id="delete-all-label" for="delete-all">Delete all</label>
 		</li>
-		<li id="sendmail"><a href="mailto:" id="maillink">Email list</a></li>
 	</ul>
+	<div class="share">
+		<a href="mailto:" id="maillink">Share this list</a>
+	</div>
 </script>
 
 </body>

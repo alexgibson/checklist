@@ -291,15 +291,22 @@ button:disabled {
 	color: #999999;
 }
 
+.share {
+	line-height: 44px;
+	font-weight: normal;
+	margin: 10px;
+	text-align: center;
+}
+
 a:link { 
-	color:#000000;
-	text-decoration:none;
+	color: #999999;
+	text-decoration:underline;
 	outline: none; 
 }
 
 a:visited, a:hover, a:active, a:focus { 
 	color: #236ED8;
-	text-decoration:none;
+	text-decoration:underline;
 	outline: none; 
 }
 

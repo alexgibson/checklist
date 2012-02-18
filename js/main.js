@@ -8,9 +8,28 @@ $(function() {
 
 		defaults: function() {
       		return {
-        		done:  false,
-        		order: items.nextOrder()
+      			text:	'',
+        		done:	false,
+        		order:	items.nextOrder()
       		};
+    	},
+    	
+		validate: function(attribs){
+			if(!_.isString(attribs.text)){
+				return 'text attribute must be a string';
+			}
+			if(!_.isBoolean(attribs.done)){
+				return 'done attribute must be a boolean';
+			}
+			if(!_.isNumber(attribs.order)){
+				return 'order attribute must be a number';
+			}
+		},
+
+		initialize: function(){
+			this.bind('error', function(model, error){
+				console.log(error);
+			});
     	},
 
     	toggle: function() {
@@ -194,7 +213,7 @@ $(function() {
 			_.each(this.collection.models, function(model) { list += model.get('text') + '\n'; });
 			mail += 'subject=' + encodeURIComponent(subject);
 			mail += '&body=' + encodeURIComponent(list);
-			mail += encodeURIComponent('\n\nMake your own list here: http://miniapps.co.uk/checklist/\n');
+			mail += encodeURIComponent('\n\nCreate your own list at: http://miniapps.co.uk/checklist/\n');
 			$('#maillink').attr('href', mail);
 			return false;
 		},
@@ -385,22 +404,6 @@ $(function() {
 
 	});
 
-	//Initialize app
-
-	var setStartupImage = function () {
-		var head = document.getElementsByTagName('head')[0], filename, link;
-		if (navigator.platform === 'iPad') {
-			filename = window.orientation !== 90 || window.orientation === -90 ? 'splash-1024x748.png' : 'splash-768x1004.png';
-		} else {
-			filename = window.devicePixelRatio === 2 ? 'splash-640x920.png' : 'splash-320x460.png';
-		}
-		link = document.createElement('link');
-		link.setAttribute('rel', 'apple-touch-startup-image');
-		link.setAttribute('href', 'images/' + filename);
-		head.appendChild(link);
-	};
-
-	setStartupImage();
 	items = new ItemList;
 	appView = new ViewManager();
 	router = new AppRouter({collection: items, appView: appView});
