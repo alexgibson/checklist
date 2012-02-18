@@ -1,7 +1,7 @@
-Checklist (Backbone.js)
+Checklist
 =======================================
 
-A port of Checklist using Backbone.js
+Checklist is an easy to use web app for creating quick to-do or shopping lists. It is built using Backbone.js, Underscore.js, Zepto.js, and is optimised for touch-based mobile & tablet web browsing. It also runs on most modern desktop browsers and is fully keyboard accessible.
 
 	
 License
@@ -11,5 +11,8 @@ Copyright (c) 2012 Alex Gibson
 
 http://miniapps.co.uk/
 
-Released under GNU General Public License v3.0
-http://www.gnu.org/licenses/gpl.html
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction except as noted below, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sublicense, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
