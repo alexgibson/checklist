@@ -1,7 +1,28 @@
 Checklist
 =======================================
 
-Checklist is an easy to use web app for creating quick to-do or shopping lists. It is built using Backbone.js, Underscore.js, Zepto.js, and is optimised for touch-based mobile & tablet web browsing. It also runs on most modern desktop browsers and is fully keyboard accessible.
+Checklist is an easy to use web app for creating quick to-do or shopping lists.
+
+Built using Backbone.js, Underscore.js and Zepto.js, Checklist is optimised for touch-based mobile &amp; tablet web browsing, but also runs on most modern desktop browsers and is fully keyboard accessible.
+
+Features
+---------------------------------------
+
+- Add, edit & delete items.
+- Batch delete items.
+- Email sharing features.
+- Share items via URL.
+- Remaining item count.
+- Runs offline.
+
+Share items via URL using: #add/your+item+here
+
+Frameworks & libraries
+---------------------------------------
+
+Backbone.js http://documentcloud.github.com/backbone/
+Underscore.js http://documentcloud.github.com/underscore/
+Zepto.js http://zeptojs.com/
 
 	
 License
