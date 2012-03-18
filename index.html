@@ -1,88 +1,165 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset='utf-8'>
+<!DOCTYPE html> 
+<html lang="en" manifest="web.appcache"> 
+<head> 
+<meta charset="utf-8" />
+<title>Checklist</title>
 
-  <title>alexgibson/Checklist @ GitHub</title>
+<!-- Meta Viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #c58797;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #3a7868; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #3a7868; }
-    h3 { text-align: center; color: #3a7868; }
-    a { color: #3a7868; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
+<!-- App info -->
+<meta name="description" content="Checklist is an easy to use web app for creating quick to-do or shopping lists." />
+<meta name="author" content="Alex Gibson" />
+
+<!-- Humans.txt -->
+<link type="text/plain" rel="author" href="humans.txt" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href="http://miniapps.co.uk/checklist/" />
+
+<!-- iOS prevent tel number format detection -->
+<meta name="format-detection" content="telephone=no" />
+
+<!-- CSS styles -->
+<link rel="stylesheet" href="css/styles.css" />
+
+<!-- JavaScript libs -->
+<script src="js/utils/tap.js"></script>
+<script src="js/libs/zepto/zepto-min.js"></script>
+<script src="js/libs/underscore/underscore-min.js"></script>
+<script src="js/libs/backbone/backbone-min.js"></script>
+<script src="js/utils/backbone.localStorage-min.js"></script>
+<script src="js/main.js"></script>
+
+<!-- iOS home screen icons -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/iOS-144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/iOS-114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/iOS-72.png" />
+<link rel="apple-touch-icon-precomposed" href="images/iOS-57.png" />
+<link rel="icon" href="images/iOS-57.png" />
+
+<!-- Async Google Analytics -->
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-6471139-3']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+var ga = document.createElement('script');
+ga.src = ('https:' == document.location.protocol ?
+    'https://ssl' : 'http://www') +
+    '.google-analytics.com/ga.js';
+ga.setAttribute('async', 'true');
+document.documentElement.firstChild.appendChild(ga);
+})();
+</script> 
+
 </head>
 
 <body>
-  <a href="https://github.com/alexgibson/Checklist"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<div id="app-view"></div>
 
-  <div id="container">
+<!-- iOS full screen header template -->
+<script type="text/template" id="ios-header-template">
+	<header role="banner">
+		<h1>Checklist</h1>
+	</header> 
+</script>
 
-    <div class="download">
-      <a href="https://github.com/alexgibson/Checklist/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/alexgibson/Checklist/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
+<!-- Empty list template -->
+<script type="text/template" id="empty-list-template">
+	<% if (total === 0) { %>
+        <li class="empty"><span id="arrow">&uarr;</span></li>
+		<li class="empty">Add an item to get started.</li>
+	<% } %> 		
+</script>
 
-    <h1><a href="https://github.com/alexgibson/Checklist">Checklist</a>
-      <span class="small">by <a href="https://github.com/alexgibson">alexgibson</a></span></h1>
+<!-- List template -->
+<script type="text/template" id="list-template">
+	<form id="new-item-bar">
+		<input type="text" id="new-item-name" placeholder="Add an item&hellip;">
+		<button type="button" id="add-button">Add</button>
+	</form>
+	<div id="wrapper">
+		<div id="scroller">
+			<div id="content">
+          		<ul id="todo-list">
+          			<li id="todo-stats"></li>
+          		</ul>
+          		<ul id="empty-list">
+          		</ul>
+          		<div id="settings-bar"></div>
+          	</div>
+		</div>			
+	</div>
+	<p class="hide" id="edit_label">Edit item</p>
+	<p class="hide" id="settings_label">Settings</p>
+</script>
 
-    <div class="description">
-      A port of Checklist using Backbone.js
-    </div>
+<!-- List item template -->
+<script type="text/template" id="item-template">
+	<input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+	<label class="item-text <%= done ? 'done' : '' %>"></label>
+	<div class="edit" role="button" aria-labelledby="edit_label" tabindex="0"></div>
+</script>
 
-    
+<!-- Completed / remaining bar template -->
+<script type="text/template" id="totals-template">
+    <% if (total) { %>
+			<span id="total-value">Completed: <%= done %></span>
+			<span id="remaining-value">Remaining: <%= remaining %></span>
+	<% } %>
+</script>
 
-    
+<!-- Settings menu button template -->
+<script type="text/template" id="settings-bar-template">
+	<% if (total) { %>
+		<div class="settings" role="button" aria-labelledby="settings_label" tabindex="0"></div>
+	<% } %>
+</script>
 
-    
+<!-- Edit template -->
+<script type="text/template" id="edit-template">
+	<form class="edit-form">
+		<fieldset>
+			<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
+			<button id="save-edit" type="button">Done</button>
+		</fieldset>
+		<ul>
+			<li>
+				<input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+				<label onclick id="completed-label" for="edit-completed">Completed</label>
+			</li>
+			<li>
+				<input type="checkbox" id="delete" />
+				<label onclick id="delete-label" for="delete">Delete item</label>
+			</li>
+		</ul>
+		<div class="share">
+			<a href="mailto:" id="share-item-link">Share this item</a>
+		</div>
+	</form>
+</script>
 
-    
-
-    
-      <h2>Authors</h2>
-      <p>Alex Gibson (a.gibson@me.com)<br/>      </p>
-    
-
-    
-      <h2>Contact</h2>
-      <p>Alex Gibson (a.gibson@me.com)<br/>      </p>
-    
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/alexgibson/Checklist/zipball/master">zip</a> or
-      <a href="https://github.com/alexgibson/Checklist/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/alexgibson/Checklist</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/alexgibson/Checklist">alexgibson/Checklist</a>
-    </div>
-
-  </div>
+<!-- Settings template -->
+<script type="text/template" id="settings-template">
+	<fieldset id="settingsform">
+		<button type="button" id="close-settings">Done</button>
+	</fieldset>
+	<ul class="settings-list">
+		<li>
+			<input type="checkbox" id="clear-completed" />
+			<label onclick id="clear-completed-label" for="clear-completed">Clear completed</label>
+		</li>
+		<li>
+			<input type="checkbox" id="delete-all" />
+			<label onclick id="delete-all-label" for="delete-all">Delete all</label>
+		</li>
+	</ul>
+	<div class="share">
+		<a href="mailto:" id="maillink">Share this list</a>
+	</div>
+</script>
 
 </body>
-</html>
+</html> 

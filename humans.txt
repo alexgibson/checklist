@@ -1,0 +1,15 @@
+/* MAIN */
+
+	Developed by: Alex Gibson
+	Site: miniapps.co.uk
+	Twitter: @alex_gibson
+	GitHub: https://github.com/alexgibson
+	Location: Newcastle upon Tyne, UK
+		
+/* SITE */
+
+	Last update: 2012/02/15
+	Language: English
+	Doctype: HTML5
+	Standards: HTML, CSS, JavaScript
+	Components: Backbone, Underscore, Zepto.

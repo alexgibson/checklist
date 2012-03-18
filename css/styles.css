@@ -1,0 +1,424 @@
+/*
+ * 
+ * Find more about this app by visiting
+ * http://miniapps.co.uk/
+ *
+ * Copyright (c) 2010-2012 Alex Gibson, http://miniapps.co.uk/
+ * 
+ */
+
+/* HTML5 CSS Reset ----------- */
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline; background:transparent;}body{line-height:1;}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}nav ul{list-style:none;}blockquote,q{quotes:none;}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none;}a{margin:0;padding:0;font-size:100%;vertical-align:baseline;background:transparent;}ins{background-color:#ff9;color:#000;text-decoration:none;}mark{background-color:#ff9;color:#000; font-style:italic;font-weight:bold;}del{text-decoration: line-through;}abbr[title],dfn[title]{border-bottom:1px dotted;cursor:help;}table{border-collapse:collapse;border-spacing:0;}hr{display:block;height:1px;border:0;border-top:1px solid #cccccc;margin:1em 0;padding:0;}input,select{vertical-align:middle;}
+
+/* App CSS styles ----------- */
+
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; } /* http://paulirish.com/2012/box-sizing-border-box-ftw/ */
+
+html { 
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	tap-highlight-color: rgba(0,0,0,0);
+	-webkit-touch-callout: none; 
+	touch-callout: none;
+}
+
+body {
+	background: #ffffff;
+	color: #4C566C;
+	font:17px/22px Helvetica, Arial, Verdana, sans-serif;
+}
+
+section {
+	position: absolute;	
+	top:0px; 
+	bottom:0px; 
+	left:0;		
+	width:100%;
+	background: #ffffff;
+}
+
+#wrapper {
+	position: absolute;
+	left: 0;
+	z-index:1;			
+	width:100%;
+	background: #ffffff;
+	padding-top: 44px;
+}
+
+#content {
+	width: 100%;
+}
+
+ul {
+	list-style-type: none;
+ 	padding: 0;
+ 	margin: 0;
+	width: 100%;
+}
+
+ul > li {
+	padding: 0 0 0 10px;
+	color: #000000;
+	background: #fff;
+	font-weight: bold;
+	text-align: left;
+	overflow: hidden;
+	line-height: 44px;
+	background: #F5F5F5;
+	background: -moz-linear-gradient(top, #FFFFFF, #F5F5F5);
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F5F5F5));
+	background: -webkit-linear-gradient(top, #FFFFFF, #F5F5F5);
+	background: -ms-linear-gradient(top, #FFFFFF, #F5F5F5);
+	background: -o-linear-gradient(top, #FFFFFF, #F5F5F5);
+	background: linear-gradient(top, #FFFFFF, #F5F5F5);
+	border-bottom: 1px solid #E8E8E8;
+}	
+
+ul > li.loading {
+	color: #999999;
+	text-align: center;
+	cursor: default;
+	border-bottom: none;
+	background: #FFFFFF;
+	padding-left: 0;
+}
+
+ul > li.empty {
+	line-height: 44px;
+	color: #999999;
+	text-align: center;
+	cursor: default;
+	border-bottom: none;
+	background: #FFFFFF;
+	padding-left: 0;
+	font-weight: normal;
+	-webkit-animation-name: bounce;
+	-webkit-animation-duration: 0.9s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-direction: alternate;
+	-moz-animation-name: bounce;
+	-moz-animation-duration: 0.9s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: ease-in-out;
+	-moz-animation-direction: alternate;
+	animation-name: bounce;
+	animation-duration: 0.9s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+	animation-direction: alternate;
+	-webkit-font-smoothing:antialiased;
+}
+
+ul > li#total-bar {
+	color:#999999;
+	text-shadow: rgba(255,255,255,0.6) 0px 1px 0;
+}
+
+#total-value {
+	display: block;
+	float: left;
+	height: 44px;
+	line-height: 44px;
+	font-weight: normal;
+	font-size: 14px;
+}
+
+#remaining-value {
+	display: block;
+	float: right;
+	height: 44px;
+	line-height: 44px;
+	font-weight: normal;
+	font-size: 14px;
+	margin-right: 10px;
+}
+
+.done {
+	text-decoration: line-through;
+	color: #B5B5B6;
+}
+
+.edit {
+	float:right;
+	width: 44px;
+	height: 44px;
+	cursor: pointer;
+	background-image: url('../images/edit-gray-32.png');
+	background-size: 30px 30px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.edit:active, .edit:focus {
+	background-image: url('../images/edit-black-32.png');
+	background-size: 30px 30px;
+}
+
+.settings {
+	float: right;
+	width: 44px;
+	height: 44px;
+	cursor: pointer;
+	background-image: url('../images/settings-gray-32.png');
+	background-size: 32px 32px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.settings:active, .settings:focus {
+	background-image: url('../images/settings-black-32.png');
+	background-size: 32px 32px;
+}
+
+form { 
+	position: relative;
+	width:100%;
+	text-align: center;
+}
+
+fieldset {
+	background: #B4BEC6;
+	background: -moz-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -webkit-gradient(linear, left top, left bottom, from(#F1F3F4), to(#B4BEC6));
+	background: -webkit-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -ms-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -o-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: linear-gradient(top, #F1F3F4, #B4BEC6);
+	border-bottom: 1px solid #8999A5;
+}
+
+#new-item-bar {
+	position:fixed;
+	top:0; 
+	left:0;
+	height:44px;
+	background: #B4BEC6;
+	background: -moz-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -webkit-gradient(linear, left top, left bottom, from(#F1F3F4), to(#B4BEC6));
+	background: -webkit-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -ms-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -o-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: linear-gradient(top, #F1F3F4, #B4BEC6);
+	border-bottom: 1px solid #8999A5;
+	z-index: 2;
+}
+
+input[type=text] {
+	-webkit-appearance: none;
+	float: left;
+	font:17px Helvetica, Arial, Verdana, sans-serif; 
+	width: 65%;
+	height: 30px;
+	margin: 7px 0 7px 7px;
+	padding: 0 8px;
+	border: 1px solid #B3B3B3;
+    -webkit-background-clip: padding-box;
+    -webkit-user-select: text;
+	-moz-user-select: text;
+	user-select: text;
+}
+
+input::-webkit-input-placeholder, :-moz-placeholder {
+	color: #B3B3B3;
+}
+
+input[type=checkbox] {
+	float: left;
+   	height: 28px;
+	width: 28px;
+	margin: 8px 0;
+	cursor: pointer;
+	border: 1px solid #B5B5B6;
+	-moz-border-radius: 14px;
+	-webkit-border-radius: 14px;
+	border-raduis: 14px;
+	vertical-align: text-middle;
+}
+
+input[type=checkbox]:checked {
+	background: #B5B5B6;
+	border: 1px solid #B5B5B6;
+}
+
+label {
+	float: left;
+	display: block;
+	width: 70%;
+	color: #000000;
+	padding: 0 0 0 10px;
+	vertical-align: middle;
+	line-height: 22px;
+	padding: 11px 0 10px 10px;
+	word-wrap: break-word;
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	user-select: text;
+}
+
+button {
+	float: right;
+    font-size: 12px;
+    font-weight:bold;
+    color: #000000;
+    height: 30px;
+    width: 20%;
+    margin: 7px 7px 7px 0;
+    padding: 0;
+	background: #B4BEC6;
+	background: -moz-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -webkit-gradient(linear, left top, left bottom, from(#F1F3F4), to(#B4BEC6));
+	background: -webkit-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -o-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: -ms-linear-gradient(top, #F1F3F4, #B4BEC6);
+	background: linear-gradient(top, #F1F3F4, #B4BEC6);
+	border: 1px solid #999999;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+button:active, button:focus {
+	background: #B4BEC6;
+}
+
+button:disabled {
+	color: #999999;
+}
+
+.share {
+	line-height: 44px;
+	font-weight: normal;
+	margin: 10px;
+	text-align: center;
+}
+
+a:link { 
+	color: #999999;
+	text-decoration:underline;
+	outline: none; 
+}
+
+a:visited, a:hover, a:active, a:focus { 
+	color: #236ED8;
+	text-decoration:underline;
+	outline: none; 
+}
+
+.hide {
+	position: absolute;
+	top: -200em;
+	left: -2000em;
+}
+
+.edit-form {
+	background: #FFFFFF;
+	border-bottom: none;
+}
+
+
+/*CSS Keyframe Animations ----------- */
+
+@-webkit-keyframes bounce {
+	from {
+		-webkit-transform: translateY(0px);
+	}
+	to {
+		-webkit-transform: translateY(20px);
+	}
+}
+
+@-moz-keyframes bounce {
+	from {
+		-moz-transform: translateY(0px);
+	}
+	to {
+		-moz-transform: translateY(20px);
+	}
+}
+
+@keyframes bounce {
+	from {
+		transform: translateY(0px);
+	}
+	to {
+		transform: translateY(20px);
+	}
+}
+
+@-webkit-keyframes highlight {
+	0% {
+		color: #236ED8;
+	}
+	80% {
+		color: #236ED8;
+	}
+	100% {
+		color: #000000;
+	}
+}
+
+@-moz-keyframes highlight {
+	0% {
+		color: #236ED8;
+	}
+	80% {
+		color: #236ED8;
+	}
+	100% {
+		color: #000000;
+	}
+}
+
+@keyframes highlight {
+	0% {
+		color: #236ED8;
+	}
+	80% {
+		color: #236ED8;
+	}
+	100% {
+		color: #000000;
+	}
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+
+	html {
+		-webkit-text-size-adjust: none; 
+		-moz-text-size-adjust: none;
+		-ms-text-size-adjust: none; 
+		text-size-adjust: none; 
+	}
+
+}
+
+/* High PPI Devices ----------- */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min--moz-device-pixel-ratio: 1.5),
+only screen and (-o-device-pixel-ratio: 3/2), 
+only screen and (min-device-pixel-ratio: 1.5) {
+
+	.edit {
+		background-image: url('../images/edit-gray-64.png');
+	}
+
+	.edit:active, .edit:focus {
+		background-image: url('../images/edit-black-64.png');
+	}
+	
+	.settings {
+		background-image: url('../images/settings-gray-64.png');
+	}
+
+	.settings:active, .settings:focus {
+		background-image: url('../images/settings-black-64.png');
+	}
+
+}
