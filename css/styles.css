@@ -149,6 +149,7 @@ ul > li#total-bar {
 	height: 44px;
 	cursor: pointer;
 	background-image: url('../images/edit-gray-32.png');
+	-webkit-background-size: 30px 30px;
 	background-size: 30px 30px;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -156,6 +157,7 @@ ul > li#total-bar {
 
 .edit:active, .edit:focus {
 	background-image: url('../images/edit-black-32.png');
+	-webkit-background-size: 302px 30px;
 	background-size: 30px 30px;
 }
 
@@ -165,6 +167,7 @@ ul > li#total-bar {
 	height: 44px;
 	cursor: pointer;
 	background-image: url('../images/settings-gray-32.png');
+	-webkit-background-size: 32px 32px;
 	background-size: 32px 32px;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -172,6 +175,7 @@ ul > li#total-bar {
 
 .settings:active, .settings:focus {
 	background-image: url('../images/settings-black-32.png');
+	-webkit-background-size: 32px 32px;
 	background-size: 32px 32px;
 }
 
