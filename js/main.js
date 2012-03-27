@@ -8,9 +8,9 @@ $(function() {
 
 		defaults: function() {
       		return {
-      			text:	'',
-        		done:	false,
-        		order:	items.nextOrder()
+      			text:	'empty item',
+        		order:	items.nextOrder(),
+        		done:	false
       		};
     	},
     	
@@ -27,6 +27,11 @@ $(function() {
 		},
 
 		initialize: function(){
+		
+			if (!this.get('title')) {
+				this.set({'title' : this.defaults.title});
+			}
+		
 			this.bind('error', function(model, error){
 				console.log(error);
 			});
@@ -34,6 +39,10 @@ $(function() {
 
     	toggle: function() {
 			this.save({done: !this.get('done')});
+		},
+		
+		clear: function() {
+			this.destroy();
 		}
 	});
 
@@ -167,6 +176,10 @@ $(function() {
 		remove: function() {
 			$(this.el).unbind();
 			$(this.el).remove();
+		},
+		
+		clear: function() {
+			this.model.clear();
 		}
 
 	});
@@ -179,7 +192,8 @@ $(function() {
 
 		events: {
 			'click #clear-completed'		: 'clearCompleted',
-			'click #delete-all'				: 'deleteAll',
+			'click #clear-all'				: 'clearAll',
+			'click #check-all'				: 'checkAllComplete',
 			'tap #close-settings'			: 'closeSettings',
 			'keypress #close-settings'		: 'closeOnEnter'
 		},
@@ -188,7 +202,8 @@ $(function() {
 			this.bind('rendered', this.afterRender, this);
 			this.collection = options.collection;
 			this.clearCompletedFlag = false;
-			this.deleteAllFlag = false;
+			this.checkAllCompletedFlag = false;
+			this.clearAllFlag = false;
 		},
 
 		render: function() {
@@ -204,9 +219,13 @@ $(function() {
 			this.clearCompletedFlag = !this.clearCompletedFlag;
 		},
 
-		deleteAll: function() {
-			this.deleteAllFlag = !this.deleteAllFlag;
+		clearAll: function() {
+			this.clearAllFlag = !this.clearAllFlag;
 		},
+		
+		checkAllComplete: function () {
+			this.checkAllCompletedFlag = !this.checkAllCompletedFlag;
+    	},
 
 		updateEmailLink: function() {
 			var mail = 'mailto:?', subject = 'My list', list = '';
@@ -220,9 +239,13 @@ $(function() {
 		
 		updateCollection: function() {
 			if (this.clearCompletedFlag) {
-				_.each(this.collection.done(), function(model) { model.destroy(); });
+				_.each(this.collection.done(), function(model) { model.clear(); });
 			}
-			if (this.deleteAllFlag) {
+			if (this.checkAllCompletedFlag) {
+				_.each(this.collection.remaining(), function(model) { model.save({'done': true}); console.log('done'); })
+				
+			}
+			if (this.clearAllFlag) {
 				while (this.collection.models.length > 0) {
 					this.collection.models[0].destroy();
 				}
@@ -253,7 +276,7 @@ $(function() {
 
 		events: {
 			'tap #save-edit'		: 'saveItem',
-			'click #delete'			: 'deleteItem',
+			'click #clear'			: 'clearItem',
 			'keypress #edit-field'	: 'saveOnEnter',
 			'keypress #save-edit'	: 'saveOnEnter',
 			'click #edit-completed'	: 'toggleDone'
@@ -262,7 +285,7 @@ $(function() {
 		initialize: function(options) {
 			this.model = options.model;
 			this.bind('rendered', this.afterRender, this);
-			this.deleted = false;
+			this.clear = false;
 		},
 
 		render: function() {
@@ -276,7 +299,7 @@ $(function() {
 
 		saveItem: function() {
 			if (this.input === '') { return; }
-			if(this.deleted) {
+			if(this.clear) {
 				this.model.destroy();
 			} else {
 				this.input = $('#edit-field').val();
@@ -296,8 +319,8 @@ $(function() {
 			this.model.toggle();
 		},
 
-		deleteItem: function() {
-			this.deleted = !this.deleted;
+		clearItem: function() {
+			this.clear = !this.clear;
 		},
 		
 		updateShareLink: function() {
