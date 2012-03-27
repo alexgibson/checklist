@@ -112,11 +112,11 @@
 		<ul>
 			<li>
 				<input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-				<label onclick id="completed-label" for="edit-completed">Completed</label>
+				<label onclick id="completed-label" for="edit-completed">Mark completed</label>
 			</li>
 			<li>
-				<input type="checkbox" id="delete" />
-				<label onclick id="delete-label" for="delete">Delete item</label>
+				<input type="checkbox" id="clear" />
+				<label onclick id="clear-label" for="clear">Clear item</label>
 			</li>
 		</ul>
 		<div class="share">
@@ -136,8 +136,12 @@
 			<label onclick id="clear-completed-label" for="clear-completed">Clear completed</label>
 		</li>
 		<li>
-			<input type="checkbox" id="delete-all" />
-			<label onclick id="delete-all-label" for="delete-all">Delete all</label>
+			<input type="checkbox" id="check-all" />
+			<label onclick id="check-all-label" for="check-all">Mark all completed</label>
+		</li>
+		<li>
+			<input type="checkbox" id="clear-all" />
+			<label onclick id="clear-all-label" for="clear-all">Clear all items</label>
 		</li>
 	</ul>
 	<div class="share">
