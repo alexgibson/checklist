@@ -3,6 +3,7 @@ CACHE MANIFEST
 
 index.html
 css/styles.css
+js/utils/json2.js
 js/utils/tap.js
 js/libs/zepto/zepto-min.js
 js/libs/underscore/underscore-min.js
