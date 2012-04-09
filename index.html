@@ -24,8 +24,14 @@
 <link rel="stylesheet" href="css/styles.css" />
 
 <!-- JavaScript libs -->
+<script>
+document.write('<script src=js/libs/' +
+('__proto__' in {} ? 'zepto/zepto-min' : 'jquery/jquery-min') +
+'.js><\/script>')
+</script>
+
+<script src="js/utils/json2.js"></script>
 <script src="js/utils/tap.js"></script>
-<script src="js/libs/zepto/zepto-min.js"></script>
 <script src="js/libs/underscore/underscore-min.js"></script>
 <script src="js/libs/backbone/backbone-min.js"></script>
 <script src="js/utils/backbone.localStorage-min.js"></script>
@@ -120,7 +126,7 @@
 			</li>
 		</ul>
 		<div class="share">
-			<a href="mailto:" id="share-item-link">Share this item</a>
+			<a href="mailto:" id="share-item-link">Share item</a>
 		</div>
 	</form>
 </script>
@@ -136,16 +142,16 @@
 			<label onclick id="clear-completed-label" for="clear-completed">Clear completed</label>
 		</li>
 		<li>
-			<input type="checkbox" id="check-all" />
-			<label onclick id="check-all-label" for="check-all">Mark all completed</label>
+			<input type="checkbox" id="clear-all" />
+			<label onclick id="clear-all-label" for="clear-all">Clear all</label>
 		</li>
 		<li>
-			<input type="checkbox" id="clear-all" />
-			<label onclick id="clear-all-label" for="clear-all">Clear all items</label>
+			<input type="checkbox" id="uncheck-all" />
+			<label onclick id="check-all-label" for="uncheck-all">Uncheck all</label>
 		</li>
 	</ul>
 	<div class="share">
-		<a href="mailto:" id="maillink">Share this list</a>
+		<a href="mailto:" id="maillink">Share list</a>
 	</div>
 </script>
 
