@@ -193,7 +193,7 @@ $(function() {
 		events: {
 			'click #clear-completed'		: 'clearCompleted',
 			'click #clear-all'				: 'clearAll',
-			'click #check-all'				: 'checkAllComplete',
+			'click #uncheck-all'			: 'uncheckAll',
 			'tap #close-settings'			: 'closeSettings',
 			'keypress #close-settings'		: 'closeOnEnter'
 		},
@@ -202,7 +202,7 @@ $(function() {
 			this.bind('rendered', this.afterRender, this);
 			this.collection = options.collection;
 			this.clearCompletedFlag = false;
-			this.checkAllCompletedFlag = false;
+			this.uncheckAllFlag = false;
 			this.clearAllFlag = false;
 		},
 
@@ -223,8 +223,8 @@ $(function() {
 			this.clearAllFlag = !this.clearAllFlag;
 		},
 		
-		checkAllComplete: function () {
-			this.checkAllCompletedFlag = !this.checkAllCompletedFlag;
+		uncheckAll: function () {
+			this.uncheckAllFlag = !this.uncheckAllFlag;
     	},
 
 		updateEmailLink: function() {
@@ -241,8 +241,8 @@ $(function() {
 			if (this.clearCompletedFlag) {
 				_.each(this.collection.done(), function(model) { model.clear(); });
 			}
-			if (this.checkAllCompletedFlag) {
-				_.each(this.collection.remaining(), function(model) { model.save({'done': true}); console.log('done'); })
+			if (this.uncheckAllFlag) {
+				_.each(this.collection.done(), function(model) { model.save({'done': false}); })
 				
 			}
 			if (this.clearAllFlag) {
