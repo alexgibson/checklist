@@ -1,3 +1,5 @@
+/*global Backbone, _, Store, Tap, console */
+
 $(function() {
 
 	var items, appView, router, tap;
@@ -6,27 +8,27 @@ $(function() {
 
 	var Item = Backbone.Model.extend({
 
-		defaults: function() {
-      		return {
-      			text:	'empty item',
-        		order:	items.nextOrder(),
-        		done:	false
-      		};
-    	},
-    	
-		validate: function(attribs){
-			if(!_.isString(attribs.text)){
+		defaults: function () {
+			return {
+				text:	'empty item',
+				order:	items.nextOrder(),
+				done:	false
+			};
+		},
+
+		validate: function (attribs) {
+			if(!_.isString(attribs.text)) {
 				return 'text attribute must be a string';
 			}
-			if(!_.isBoolean(attribs.done)){
+			if(!_.isBoolean(attribs.done)) {
 				return 'done attribute must be a boolean';
 			}
-			if(!_.isNumber(attribs.order)){
+			if(!_.isNumber(attribs.order)) {
 				return 'order attribute must be a number';
 			}
 		},
 
-		initialize: function(){
+		initialize: function (){
 		
 			if (!this.get('title')) {
 				this.set({'title' : this.defaults.title});
@@ -35,13 +37,13 @@ $(function() {
 			this.bind('error', function(model, error){
 				console.log(error);
 			});
-    	},
+		},
 
-    	toggle: function() {
+		toggle: function () {
 			this.save({done: !this.get('done')});
 		},
 		
-		clear: function() {
+		clear: function () {
 			this.destroy();
 		}
 	});
@@ -52,22 +54,22 @@ $(function() {
 
 		localStorage: new Store('items'),
 
-		done: function() {
-      		return this.filter(function(item){ return item.get('done'); });
-    	},
+		done: function () {
+			return this.filter(function (item) { return item.get('done'); });
+		},
 
-    	remaining: function() {
-      		return this.without.apply(this, this.done());
-    	},
+		remaining: function () {
+			return this.without.apply(this, this.done());
+		},
 
-    	nextOrder: function() {
-      		if (!this.length) return 1;
-      		return this.last().get('order') + 1;
-    	},
+		nextOrder: function () {
+			if (!this.length) { return 1; }
+			return this.last().get('order') + 1;
+		},
 
-    	comparator: function(item) {
-      		return item.get('order');
-    	}
+		comparator: function (item) {
+			return item.get('order');
+		}
 	});
 
 	//Routing & View Manager
@@ -76,14 +78,14 @@ $(function() {
 
 		routes: {
 			'':				'defaultRoute',
-			'settings': 	'settings',
-			'add/:id': 		'add',
+			'settings':		'settings',
+			'add/:id':		'add',
 			'edit/:id':		'edit'
 		},
 
 		initialize: function(options) {
 			this.collection = options.collection;
-      		this.appView = options.appView;
+			this.appView = options.appView;
 		},
 
 		settings: function() {
@@ -138,9 +140,9 @@ $(function() {
 		template: _.template($('#item-template').html()),
 
 		events: {
-			'click .check' 		: 'toggleDone',
-			'tap .item-text' 	: 'toggleDone',
-			'tap .edit' 		: 'editItem',
+			'click .check'		: 'toggleDone',
+			'tap .item-text'	: 'toggleDone',
+			'tap .edit'			: 'editItem',
 			'keypress .edit'	: 'editOnEnter'
 		},
 
@@ -169,7 +171,7 @@ $(function() {
 		},
 		
 		editOnEnter: function(e) {
-			if (e.keyCode != 13) return;
+			if (e.keyCode !== 13) { return; }
 			router.navigate('edit/' + this.model.get('id'), {trigger: true});
 		},
 
@@ -191,11 +193,11 @@ $(function() {
 		settingsTemplate: _.template($('#settings-template').html()),
 
 		events: {
-			'click #clear-completed'		: 'clearCompleted',
-			'click #clear-all'				: 'clearAll',
-			'click #uncheck-all'			: 'uncheckAll',
-			'tap #close-settings'			: 'closeSettings',
-			'keypress #close-settings'		: 'closeOnEnter'
+			'click #clear-completed':		'clearCompleted',
+			'click #clear-all':				'clearAll',
+			'click #uncheck-all':			'uncheckAll',
+			'tap #close-settings':			'closeSettings',
+			'keypress #close-settings':		'closeOnEnter'
 		},
 
 		initialize: function(options) {
@@ -225,7 +227,7 @@ $(function() {
 		
 		uncheckAll: function () {
 			this.uncheckAllFlag = !this.uncheckAllFlag;
-    	},
+		},
 
 		updateEmailLink: function() {
 			var mail = 'mailto:?', subject = 'My list', list = '';
@@ -242,7 +244,7 @@ $(function() {
 				_.each(this.collection.done(), function(model) { model.clear(); });
 			}
 			if (this.uncheckAllFlag) {
-				_.each(this.collection.done(), function(model) { model.save({'done': false}); })
+				_.each(this.collection.done(), function(model) { model.save({'done': false}); });
 				
 			}
 			if (this.clearAllFlag) {
@@ -258,7 +260,7 @@ $(function() {
 		},
 		
 		closeOnEnter: function(e) {
-			if (e.keyCode != 13) return;
+			if (e.keyCode !== 13) { return; }
 			this.updateCollection();
 		},
 
@@ -310,7 +312,7 @@ $(function() {
 
 		saveOnEnter: function(e) {
 			var text = $('#edit-field').val();
-			if (!text || e.keyCode != 13) return;
+			if (!text || e.keyCode !== 13) { return; }
 			e.preventDefault();
 			this.saveItem();
 		},
@@ -324,8 +326,8 @@ $(function() {
 		},
 		
 		updateShareLink: function() {
-			var mail = 'mailto:?', 
-				subject = 'New item for your checklist', 
+			var mail = 'mailto:?',
+				subject = 'New item for your checklist',
 				item = this.model.get('text');
 
 			mail += 'subject=' + encodeURIComponent(subject);
@@ -366,7 +368,7 @@ $(function() {
 
 		render: function() {
 			var length = this.collection.length;
-      		this.$('#todo-stats').html(this.statsTemplate({
+			this.$('#todo-stats').html(this.statsTemplate({
 				total:      length,
 				done:       this.collection.done().length,
 				remaining:  this.collection.remaining().length
@@ -378,9 +380,9 @@ $(function() {
 				total:      length
 			}));
 			return this;
-    	},
+		},
 
-    	addOne: function(item) {
+		addOne: function(item) {
 			var itemView = new ItemView({model: item});
 			$('#todo-list').append(itemView.render().el);
 		},
@@ -393,7 +395,7 @@ $(function() {
 		createOnEnter: function(e) {
 			var input = $('#new-item-name'),
 				text = input.val();
-			if (!text || e.keyCode != 13) return;
+			if (!text || e.keyCode !== 13) { return; }
 			e.preventDefault();
 			this.collection.create({text: text});
 			input.val('').blur();
@@ -402,7 +404,7 @@ $(function() {
 		createOnSubmit: function(e) {
 			var input = $('#new-item-name'),
 				text = input.val();
-			if (!text) return;
+			if (!text) { return; }
 			e.preventDefault();
 			this.collection.create({text: text});
 			input.val('');
@@ -413,7 +415,7 @@ $(function() {
 		},
 		
 		settingsOnEnter: function(e) {
-			if (e.keyCode != 13) return;
+			if (e.keyCode !== 13) { return; }
 			router.navigate('settings', {trigger: true});
 		},
 
@@ -427,7 +429,7 @@ $(function() {
 
 	});
 
-	items = new ItemList;
+	items = new ItemList();
 	appView = new ViewManager();
 	router = new AppRouter({collection: items, appView: appView});
 	tap = new Tap(document.getElementById('app-view'));
