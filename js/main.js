@@ -262,7 +262,7 @@ $(function () {
 			});
 			mail += 'subject=' + encodeURIComponent(subject);
 			mail += '&body=' + encodeURIComponent(list);
-			mail += encodeURIComponent('\n\nCreate your own list at: http://miniapps.co.uk/checklist/\n');
+			mail += encodeURIComponent('\n\nCreate your own list at: http://alexgibson.github.com/checklist/\n');
 			$('#maillink').attr('href', mail);
 			return false;
 		},
@@ -365,7 +365,7 @@ $(function () {
 				item = this.model.get('text');
 
 			mail += 'subject=' + encodeURIComponent(subject);
-			mail += '&body=' + 'http://miniapps.co.uk/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
+			mail += '&body=' + 'http://alexgibson.github.com/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
 			$('#share-item-link').attr('href', mail);
 			return false;
 		},
