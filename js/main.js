@@ -22,9 +22,9 @@ $(function () {
 		tap;
 
 	/**
-	 * Model for checklist items 
-	 * Sets defaults & performs data validation on initialisation of new model items.
-	 */
+	* Model for checklist items
+	* Sets defaults & performs data validation on initialisation of new model items.
+	*/
 	Item = Backbone.Model.extend({
 
 		defaults: function () {
@@ -66,9 +66,9 @@ $(function () {
 	});
 
 	/**
-	 * A collection of Item model data which is saved to the browser using localStorage.
-	 * Includes methods for items counts and finding the next order value for new items
-	 */
+	* A collection of Item model data which is saved to the browser using localStorage.
+	* Includes methods for items counts and finding the next order value for new items
+	*/
 	ItemList = Backbone.Collection.extend({
 
 		model: Item,
@@ -90,8 +90,8 @@ $(function () {
 	});
 
 	/**
-	 * Responsible for listening for URL hash changes and dispatching each route to appropriate view handler
-	 */
+	* Responsible for listening for URL hash changes and dispatching each route to appropriate view handler
+	*/
 	AppRouter = Backbone.Router.extend({
 
 		routes: {
@@ -142,8 +142,8 @@ $(function () {
 	});
 
 	/**
-	 * Responsible for ensuring old views are from the DOM before rendering a new view
-	 */
+	* Responsible for ensuring old views are from the DOM before rendering a new view
+	*/
 	ViewManager = Backbone.View.extend({
 		showView: function (view) {
 			if (this.currentView) { this.currentView.destroy(); }
@@ -154,8 +154,8 @@ $(function () {
 	});
 
 	/**
-	 * Responsible for rendering each checklist item and handling event logic
-	 */
+	* Responsible for rendering each checklist item and handling event logic
+	*/
 	ItemView = Backbone.View.extend({
 
 		tagName:  'li',
@@ -210,8 +210,8 @@ $(function () {
 	});
 
 	/**
-	 * Responsible for rendering settings view and handling event logic
-	 */
+	* Responsible for rendering settings view and handling event logic
+	*/
 	SettingsView = Backbone.View.extend({
 
 		tagName:  'section',
@@ -302,8 +302,8 @@ $(function () {
 	});
 
 	/**
-	 * Responsible for rendering edit view and handling event logic
-	 */
+	* Responsible for rendering edit view and handling event logic
+	*/
 	EditView = Backbone.View.extend({
 
 		tagName:  'section',
@@ -378,8 +378,8 @@ $(function () {
 	});
 
 	/**
-	 * Responsible for rendering main list view and handling event logic
-	 */
+	* Responsible for rendering main list view and handling event logic
+	*/
 	ListView = Backbone.View.extend({
 
 		tagName:  'section',
@@ -468,8 +468,8 @@ $(function () {
 	});
 
 	/**
-	 * App config and init
-	 */
+	* App config and init
+	*/
 
 	items = new ItemList();
 	appView = new ViewManager();
