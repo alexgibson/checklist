@@ -142,7 +142,7 @@ $(function () {
 	});
 
 	/**
-	* Responsible for ensuring old views are from the DOM before rendering a new view
+	* Responsible for ensuring old views are destroyed before rendering a new view
 	*/
 	ViewManager = Backbone.View.extend({
 		showView: function (view) {
