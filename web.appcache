@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 3.0.4
+#version 3.0.5
 
 index.html
 css/styles.css
@@ -9,7 +9,7 @@ js/libs/zepto/zepto-min.js
 js/libs/underscore/underscore-min.js
 js/libs/backbone/backbone-min.js
 js/utils/backbone.localStorage-min.js
-js/main-min.js
+js/main.js
 images/edit-black-32.png
 images/edit-black-64.png
 images/edit-gray-32.png
