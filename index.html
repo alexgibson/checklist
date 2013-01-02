@@ -47,6 +47,17 @@ document.write('<script src=js/libs/' +
 <link rel="apple-touch-icon-precomposed" href="images/iOS-57.png" />
 <link rel="icon" href="images/iOS-57.png" />
 
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-33263279-1']);
+	_gaq.push(['_trackPageview']);
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
 </head>
 
 <body>
@@ -55,7 +66,7 @@ document.write('<script src=js/libs/' +
 <!-- Empty list template -->
 <script type="text/template" id="empty-list-template">
 	<% if (total === 0) { %>
-        <li class="empty"><span id="arrow">&uarr;</span></li>
+		<li class="empty"><span id="arrow">&uarr;</span></li>
 		<li class="empty">Add an item to get started.</li>
 	<% } %> 		
 </script>
@@ -69,13 +80,13 @@ document.write('<script src=js/libs/' +
 	<div id="wrapper">
 		<div id="scroller">
 			<div id="content">
-          		<ul id="todo-list">
-          			<li id="todo-stats"></li>
-          		</ul>
-          		<ul id="empty-list">
-          		</ul>
-          		<div id="settings-bar"></div>
-          	</div>
+				<ul id="todo-list">
+					<li id="todo-stats"></li>
+				</ul>
+				<ul id="empty-list">
+				</ul>
+				<div id="settings-bar"></div>
+			</div>
 		</div>			
 	</div>
 	<p class="hide" id="edit_label">Edit item</p>
@@ -91,7 +102,7 @@ document.write('<script src=js/libs/' +
 
 <!-- Completed / remaining bar template -->
 <script type="text/template" id="totals-template">
-    <% if (total) { %>
+	<% if (total) { %>
 			<span id="total-value">Completed: <%= done %></span>
 			<span id="remaining-value">Remaining: <%= remaining %></span>
 	<% } %>
