@@ -251,7 +251,6 @@ input[type=checkbox]:checked {
 label {
 	float: left;
 	display: block;
-	width: 70%;
 	color: #000000;
 	padding: 0 0 0 10px;
 	vertical-align: middle;
