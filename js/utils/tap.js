@@ -18,6 +18,8 @@
 		this.moved = false; //flags if the finger has moved
 		this.startX = 0; //starting x coordinate
 		this.startY = 0; //starting y coordinate
+		this.deltaX = 0;
+		this.deltaY = 0;
 		this.element.addEventListener(this.eventStart, this, false);
 	}
 	
@@ -26,8 +28,10 @@
 	//start			
 	Tap.prototype.start = function (e) {
 		this.moved = false;
-		this.startX = this.hasTouch ? e.touches[0].clientX : e.clientX;
-		this.startY = this.hasTouch ? e.touches[0].clientY : e.clientY;
+		this.deltaX = 0;
+		this.deltaY = 0;
+		this.startX = this.hasTouch ? e.touches[0].pageX : e.pageX;
+		this.startY = this.hasTouch ? e.touches[0].pageY : e.pageY;
 		this.element.addEventListener(this.eventMove, this, false);
 		this.element.addEventListener(this.eventEnd, this, false);
 		if (this.hasTouch) {
@@ -37,10 +41,14 @@
 
 	//move	
 	Tap.prototype.move = function (e) {
-		var x = this.hasTouch ? e.touches[0].clientX : e.clientX,
-			y = this.hasTouch ? e.touches[0].clientY : e.clientY;
-		//if finger moves more than 10px flag to cancel
-		if (Math.abs(x - this.startX) > 10 || Math.abs(y - this.startY) > 10) {
+		var x = this.hasTouch ? e.touches[0].pageX : e.pageX,
+			y = this.hasTouch ? e.touches[0].pageY : e.pageY;
+
+		this.deltaX += Math.abs(x - this.startX);
+		this.deltaY += Math.abs(y - this.startY);
+
+		//if finger moves more than 6px flag to cancel
+		if (this.deltaX > 5 || this.deltaY > 5) {
 			this.moved = true;
 		}
 	};
@@ -57,6 +65,8 @@
 			evt.initEvent('tap', true, true);
 			e.target.dispatchEvent(evt);
 		}
+		this.deltaX = 0;
+		this.deltaY = 0;
 		this.element.removeEventListener(this.eventMove, this, false);
 		this.element.removeEventListener(this.eventEnd, this, false);
 		if (this.hasTouch) {
@@ -70,6 +80,8 @@
 		this.moved = false;
 		this.startX = 0;
 		this.startY = 0;
+		this.deltaX = 0;
+		this.deltaY = 0;
 		this.element.removeEventListener(this.eventMove, this, false);
 		this.element.removeEventListener(this.eventEnd, this, false);
 		if (this.hasTouch) {
