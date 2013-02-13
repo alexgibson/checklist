@@ -8,47 +8,44 @@
  *
  */
 
+/*global window: false, document: false */
+
 (function (window, document) {
+
+	'use strict';
 
 	function Tap(el) {
 		this.element = typeof el === 'object' ? el : document.getElementById(el);
-		this.eventStart = this.hasTouch ? 'touchstart' : 'mousedown';
-		this.eventMove = this.hasTouch ? 'touchmove' : 'mousemove';
-		this.eventEnd = this.hasTouch ? 'touchend' : 'mouseup';
 		this.moved = false; //flags if the finger has moved
 		this.startX = 0; //starting x coordinate
 		this.startY = 0; //starting y coordinate
-		this.deltaX = 0;
-		this.deltaY = 0;
-		this.element.addEventListener(this.eventStart, this, false);
+		this.hasTouchEventOccured = false; //flag touch event
+		this.element.addEventListener('touchstart', this, false);
+		this.element.addEventListener('mousedown', this, false);
 	}
-	
-	Tap.prototype.hasTouch = 'ontouchstart' in window || 'createTouch' in document;
 
 	//start			
 	Tap.prototype.start = function (e) {
-		this.moved = false;
-		this.deltaX = 0;
-		this.deltaY = 0;
-		this.startX = this.hasTouch ? e.touches[0].pageX : e.pageX;
-		this.startY = this.hasTouch ? e.touches[0].pageY : e.pageY;
-		this.element.addEventListener(this.eventMove, this, false);
-		this.element.addEventListener(this.eventEnd, this, false);
-		if (this.hasTouch) {
-			this.element.addEventListener('touchcancel', this, false);
+		if (e.type === 'touchstart') {
+			this.hasTouchEventOccured = true;
 		}
+		this.moved = false;
+		this.startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+		this.startY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
+		this.element.addEventListener('touchmove', this, false);
+		this.element.addEventListener('touchend', this, false);
+		this.element.addEventListener('touchcancel', this, false);
+		this.element.addEventListener('mousemove', this, false);
+		this.element.addEventListener('mouseup', this, false);
 	};
 
 	//move	
 	Tap.prototype.move = function (e) {
-		var x = this.hasTouch ? e.touches[0].pageX : e.pageX,
-			y = this.hasTouch ? e.touches[0].pageY : e.pageY;
+		var x = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX,
+			y = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
 
-		this.deltaX += Math.abs(x - this.startX);
-		this.deltaY += Math.abs(y - this.startY);
-
-		//if finger moves more than 6px flag to cancel
-		if (this.deltaX > 5 || this.deltaY > 5) {
+		//if finger moves more than 10px flag to cancel
+		if (Math.abs(x - this.startX) > 10 || Math.abs(y - this.startY) > 10) {
 			this.moved = true;
 		}
 	};
@@ -56,22 +53,24 @@
 	//end
 	Tap.prototype.end = function (e) {
 		var evt;
+
+		if (this.hasTouchEventOccured && e.type === 'mouseup') {
+			e.preventDefault();
+			e.stopPropagation();
+			this.hasTouchEventOccured = false;
+			return;
+		}
+
 		if (!this.moved) {
-			//only preventDefault on elements that are not form inputs
-			if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-				e.preventDefault();
-			}
 			evt = document.createEvent('Event');
 			evt.initEvent('tap', true, true);
 			e.target.dispatchEvent(evt);
 		}
-		this.deltaX = 0;
-		this.deltaY = 0;
-		this.element.removeEventListener(this.eventMove, this, false);
-		this.element.removeEventListener(this.eventEnd, this, false);
-		if (this.hasTouch) {
-			this.element.removeEventListener('touchcancel', this, false);
-		}
+		this.element.removeEventListener('touchmove', this, false);
+		this.element.removeEventListener('touchend', this, false);
+		this.element.removeEventListener('touchcancel', this, false);
+		this.element.removeEventListener('mousemove', this, false);
+		this.element.removeEventListener('mouseup', this, false);
 	};
 
 	//touchcancel
@@ -80,13 +79,11 @@
 		this.moved = false;
 		this.startX = 0;
 		this.startY = 0;
-		this.deltaX = 0;
-		this.deltaY = 0;
-		this.element.removeEventListener(this.eventMove, this, false);
-		this.element.removeEventListener(this.eventEnd, this, false);
-		if (this.hasTouch) {
-			this.element.removeEventListener('touchcancel', this, false);
-		}
+		this.element.removeEventListener('touchmove', this, false);
+		this.element.removeEventListener('touchend', this, false);
+		this.element.removeEventListener('touchcancel', this, false);
+		this.element.removeEventListener('mousemove', this, false);
+		this.element.removeEventListener('mouseup', this, false);
 	};
 
 	Tap.prototype.handleEvent = function (e) {
