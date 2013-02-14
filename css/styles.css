@@ -201,7 +201,7 @@ fieldset {
 	border-bottom: 1px solid #8999A5;
 }
 
-#new-item-bar {
+#new-item-bar, #edit-item-bar {
 	position:fixed;
 	top:0; 
 	left:0;
@@ -216,6 +216,10 @@ fieldset {
 	background: linear-gradient(to bottom, #f1f3f4 0%,#b4bec6 100%);
 	border-bottom: 1px solid #8999A5;
 	z-index: 2;
+}
+
+#edit-item-list {
+	padding-top: 44px;
 }
 
 input[type=text] {
@@ -326,11 +330,6 @@ a:visited, a:hover, a:active, a:focus {
 	position: absolute;
 	top: -200em;
 	left: -2000em;
-}
-
-.edit-form {
-	background: #FFFFFF;
-	border-bottom: none;
 }
 
 
