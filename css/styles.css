@@ -204,6 +204,7 @@ fieldset {
 	top:0; 
 	left:0;
 	height:44px;
+	padding: 7px;
 	background: #b4bec6;
 	background: -moz-linear-gradient(top, #f1f3f4 0%, #b4bec6 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1f3f4), color-stop(100%,#b4bec6));
@@ -228,6 +229,12 @@ input[type=text] {
     -webkit-user-select: text;
 	-moz-user-select: text;
 	user-select: text;
+}
+
+#new-item-name {
+	float: none;
+	width: 100%;
+	margin: 0;
 }
 
 input::-webkit-input-placeholder, :-moz-placeholder {
