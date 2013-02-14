@@ -116,27 +116,25 @@ document.write('<script src=js/libs/' +
 
 <!-- Edit template -->
 <script type="text/template" id="edit-template">
-	<form class="edit-form">
-		<fieldset>
-			<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
-		</fieldset>
-		<ul>
-			<li>
-				<input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-				<label onclick id="completed-label" for="edit-completed">Completed</label>
-			</li>
-			<li>
-				<input type="checkbox" id="clear" />
-				<label onclick id="clear-label" for="clear">Delete item</label>
-			</li>
-		</ul>
-		<div class="control-container">
-			<button id="save-edit" type="button">Done</button>
-		</div>
-		<div class="share">
-			<a href="mailto:" id="share-item-link">Share item</a>
-		</div>
+	<form id="edit-item-bar">
+		<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
 	</form>
+	<ul id="edit-item-list">
+		<li>
+			<input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+			<label onclick id="completed-label" for="edit-completed">Completed</label>
+		</li>
+		<li>
+			<input type="checkbox" id="clear" />
+			<label onclick id="clear-label" for="clear">Delete item</label>
+		</li>
+	</ul>
+	<div class="control-container">
+		<button id="save-edit" type="button">Done</button>
+	</div>
+	<div class="share">
+		<a href="mailto:" id="share-item-link">Share item</a>
+	</div>
 </script>
 
 <!-- Settings template -->
