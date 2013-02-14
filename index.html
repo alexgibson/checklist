@@ -123,11 +123,11 @@ document.write('<script src=js/libs/' +
 		<ul>
 			<li>
 				<input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-				<label onclick id="completed-label" for="edit-completed">Mark completed</label>
+				<label onclick id="completed-label" for="edit-completed">Completed</label>
 			</li>
 			<li>
 				<input type="checkbox" id="clear" />
-				<label onclick id="clear-label" for="clear">Clear item</label>
+				<label onclick id="clear-label" for="clear">Delete item</label>
 			</li>
 		</ul>
 		<div class="control-container">
@@ -145,11 +145,11 @@ document.write('<script src=js/libs/' +
 	<ul class="settings-list">
 		<li>
 			<input type="checkbox" id="clear-completed" />
-			<label onclick id="clear-completed-label" for="clear-completed">Clear completed</label>
+			<label onclick id="clear-completed-label" for="clear-completed">Delete completed</label>
 		</li>
 		<li>
 			<input type="checkbox" id="clear-all" />
-			<label onclick id="clear-all-label" for="clear-all">Clear all</label>
+			<label onclick id="clear-all-label" for="clear-all">Delete all</label>
 		</li>
 		<li>
 			<input type="checkbox" id="uncheck-all" />
