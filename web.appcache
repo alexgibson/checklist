@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#version 3.0.12
+#version 3.0.14
 
 index.html
 css/styles.css
@@ -10,14 +10,6 @@ js/libs/underscore/underscore-min.js
 js/libs/backbone/backbone-min.js
 js/utils/backbone.localStorage-min.js
 js/main-min.js
-images/edit-black-32.png
-images/edit-black-64.png
-images/edit-gray-32.png
-images/edit-gray-64.png
-images/settings-black-32.png
-images/settings-black-64.png
-images/settings-gray-32.png
-images/settings-gray-64.png
 
 NETWORK:
 *
