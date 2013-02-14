@@ -119,7 +119,6 @@ document.write('<script src=js/libs/' +
 	<form class="edit-form">
 		<fieldset>
 			<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
-			<button id="save-edit" type="button">Done</button>
 		</fieldset>
 		<ul>
 			<li>
@@ -131,6 +130,9 @@ document.write('<script src=js/libs/' +
 				<label onclick id="clear-label" for="clear">Clear item</label>
 			</li>
 		</ul>
+		<div class="control-container">
+			<button id="save-edit" type="button">Done</button>
+		</div>
 		<div class="share">
 			<a href="mailto:" id="share-item-link">Share item</a>
 		</div>
@@ -139,9 +141,7 @@ document.write('<script src=js/libs/' +
 
 <!-- Settings template -->
 <script type="text/template" id="settings-template">
-	<fieldset id="settingsform">
-		<button type="button" id="close-settings">Done</button>
-	</fieldset>
+	<fieldset></fieldset>
 	<ul class="settings-list">
 		<li>
 			<input type="checkbox" id="clear-completed" />
@@ -156,6 +156,9 @@ document.write('<script src=js/libs/' +
 			<label onclick id="check-all-label" for="uncheck-all">Uncheck all</label>
 		</li>
 	</ul>
+	<div class="control-container">
+		<button type="button" id="close-settings">Done</button>
+	</div>
 	<div class="share">
 		<a href="mailto:" id="maillink">Share list</a>
 	</div>
