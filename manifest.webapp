@@ -15,5 +15,5 @@
 	"appcache_path": "/web.appcache",
 	"fullscreen": "true",
 	"type": "web",
-	"installs_allowed_from": ["*"]"
+	"installs_allowed_from": ["*"]
 }
