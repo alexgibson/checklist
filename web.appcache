@@ -1,11 +1,11 @@
 CACHE MANIFEST
-#version 3.0.4
+#version 3.0.5
 
 index.html
 css/styles.css
 js/utils/json2.js
 js/utils/tap.js
-js/libs/zepto/zepto-min.js
+js/libs/jquery/jquery-min.js
 js/libs/underscore/underscore-min.js
 js/libs/backbone/backbone-min.js
 js/utils/backbone.localStorage-min.js
