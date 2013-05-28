@@ -12,4 +12,4 @@
 	Language: English
 	Doctype: HTML5
 	Standards: HTML, CSS, JavaScript
-	Components: Backbone, Underscore, Zepto.
+	Components: Backbone, Underscore, jQuery.
