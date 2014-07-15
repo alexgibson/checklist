@@ -1,11 +1,11 @@
-<!DOCTYPE html> 
-<html lang="en" manifest="web.appcache"> 
-<head> 
+<!DOCTYPE html>
+<html lang="en" manifest="web.appcache">
+<head>
 <meta charset="utf-8" />
-<title>Checklist mobile web app | Alex Gibson</title>
+<title>Checklist</title>
 
 <!-- Meta Viewport -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
 
 <!-- App info -->
 <meta name="description" content="Checklist is simple mobile web app for creating quick to-do lists." />
@@ -42,120 +42,120 @@
 <link rel="apple-touch-icon-precomposed" href="images/iOS-57.png" />
 <link rel="icon" href="images/iOS-57.png" />
 
-<script type="text/javascript">
-	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-33263279-1']);
-	_gaq.push(['_trackPageview']);
-	(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-	})();
-</script>
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+ga('create', 'UA-33263279-1', 'auto');  // Replace with your property ID.
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
 </head>
 
 <body>
-<div id="app-view"></div>
+<main role="main" id="app-view"></main>
 
 <!-- Empty list template -->
 <script type="text/template" id="empty-list-template">
-	<% if (total === 0) { %>
-		<li class="empty"><span id="arrow">&uarr;</span></li>
-		<li class="empty">Add an item to get started.</li>
-	<% } %> 		
+    <% if (total === 0) { %>
+        <p>Add an item to get started.</p>
+    <% } %>
 </script>
 
 <!-- List template -->
 <script type="text/template" id="list-template">
-	<form id="new-item-bar">
-		<input type="text" id="new-item-name" placeholder="Add an item&hellip;">
-	</form>
-	<div id="wrapper">
-		<div id="scroller">
-			<div id="content">
-				<ul id="todo-list">
-					<li id="todo-stats"></li>
-				</ul>
-				<ul id="empty-list">
-				</ul>
-				<div id="settings-bar"></div>
-			</div>
-		</div>			
-	</div>
-	<p class="hide" id="edit_label">Edit item</p>
-	<p class="hide" id="settings_label">Settings</p>
+    <header>
+        <h1>Checklist</h1>
+        <div id="settings-bar"></div>
+    </header>
+    <form id="new-item-bar">
+        <input type="text" id="new-item-name" placeholder="Add an item&hellip;">
+    </form>
+    <div id="content">
+        <div id="todo-stats"></div>
+        <ul id="todo-list"></ul>
+        <div id="get-started"></div>
+    </div>
 </script>
 
 <!-- List item template -->
 <script type="text/template" id="item-template">
-	<input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-	<label class="item-text <%= done ? 'done' : '' %>"></label>
-	<div class="edit" role="button" aria-labelledby="edit_label" tabindex="0"></div>
+    <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+    <label class="item-text <%= done ? 'done' : '' %>"></label>
+    <button type="button" class="edit">Edit item</button>
 </script>
 
 <!-- Completed / remaining bar template -->
 <script type="text/template" id="totals-template">
-	<% if (total) { %>
-			<span id="total-value">Completed: <%= done %></span>
-			<span id="remaining-value">Remaining: <%= remaining %></span>
-	<% } %>
+    <% if (total) { %>
+        <span id="total-value">Completed: <%= done %></span>
+        <span id="remaining-value">Remaining: <%= remaining %></span>
+    <% } %>
 </script>
 
 <!-- Settings menu button template -->
 <script type="text/template" id="settings-bar-template">
-	<% if (total) { %>
-		<div class="settings" role="button" aria-labelledby="settings_label" tabindex="0"></div>
-	<% } %>
+    <% if (total) { %>
+        <button type="button" class="settings">Settings</div>
+    <% } %>
 </script>
 
 <!-- Edit template -->
 <script type="text/template" id="edit-template">
-	<form id="edit-item-bar">
-		<input type="text" id="edit-field" maxlength="75" autocorrect placeholder="Item Name" value="<%= text %>"/>
-	</form>
-	<ul id="edit-item-list">
-		<li>
-			<input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-			<label onclick id="completed-label" for="edit-completed">Completed</label>
-		</li>
-		<li>
-			<input type="checkbox" id="clear" />
-			<label onclick id="clear-label" for="clear">Delete item</label>
-		</li>
-	</ul>
-	<div class="control-container">
-		<button id="save-edit" type="button">Done</button>
-	</div>
-	<div class="share">
-		<a href="mailto:" id="share-item-link">Share item</a>
-	</div>
+    <header>
+        <h1>Edit</h1>
+    </header>
+    <form id="edit-item-bar">
+        <input type="text" id="edit-field" placeholder="Item Name" value="<%= text %>"/>
+    </form>
+    <ul id="edit-item-list">
+        <li>
+            <input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+            <label onclick id="completed-label" for="edit-completed">Completed</label>
+        </li>
+        <li>
+            <input type="checkbox" id="clear" />
+            <label onclick id="clear-label" for="clear">Delete item</label>
+        </li>
+    </ul>
+    <div class="control-container">
+        <button id="save-edit" type="button">Done</button>
+    </div>
+    <div class="share">
+        <a href="mailto:" id="share-item-link">Share item</a>
+    </div>
 </script>
 
 <!-- Settings template -->
 <script type="text/template" id="settings-template">
-	<fieldset></fieldset>
-	<ul class="settings-list">
-		<li>
-			<input type="checkbox" id="clear-completed" />
-			<label onclick id="clear-completed-label" for="clear-completed">Delete completed</label>
-		</li>
-		<li>
-			<input type="checkbox" id="clear-all" />
-			<label onclick id="clear-all-label" for="clear-all">Delete all</label>
-		</li>
-		<li>
-			<input type="checkbox" id="uncheck-all" />
-			<label onclick id="check-all-label" for="uncheck-all">Uncheck all</label>
-		</li>
-	</ul>
-	<div class="control-container">
-		<button type="button" id="close-settings">Done</button>
-	</div>
-	<div class="share">
-		<a href="mailto:" id="maillink">Share list</a>
-	</div>
+    <header>
+        <h1>Settings</h1>
+    </header>
+    <ul id="settings-list">
+        <li>
+            <input type="checkbox" id="delete-completed" />
+            <label onclick id="delete-completed-label" for="delete-completed">Delete completed</label>
+        </li>
+        <li>
+            <input type="checkbox" id="delete-all" />
+            <label onclick id="delete-all-label" for="delete-all">Delete all</label>
+        </li>
+        <li>
+            <input type="checkbox" id="uncheck-all" />
+            <label onclick id="check-all-label" for="uncheck-all">Uncheck all</label>
+        </li>
+    </ul>
+    <div class="control-container">
+        <button type="button" id="close-settings">Done</button>
+    </div>
+    <div class="share">
+        <a href="mailto:" id="maillink">Share list</a>
+    </div>
 </script>
 
 </body>
-</html> 
+</html>
