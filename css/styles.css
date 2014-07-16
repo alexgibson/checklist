@@ -260,11 +260,13 @@ input[type=text] {
     user-select: text;
 }
 
-input::-webkit-input-placeholder, :-moz-placeholder {
+input::-webkit-input-placeholder,
+:-moz-placeholder {
     color: #B3B3B3;
 }
 
-input[type=checkbox] {
+input[type=checkbox],
+input[type=radio] {
     float: left;
     cursor: pointer;
 }

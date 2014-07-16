@@ -1,25 +1,19 @@
-/**
- * @author Alex Gibson
- * @name Checklist
- * @desc Checklist is an easy to use web app for creating quick to-do or shopping lists.
- */
-
-/*global $, Backbone, _, Store, Tap, console */
-
 $(function () {
 
-    var Item,
-        ItemList,
-        AppRouter,
-        ViewManager,
-        ItemView,
-        SettingsView,
-        EditView,
-        ListView,
-        items,
-        appView,
-        router,
-        tap;
+    var Item;
+    var ItemList;
+    var AppRouter;
+    var ViewManager;
+    var ItemView;
+    var SettingsView;
+    var EditView;
+    var ListView;
+    var items;
+    var appView;
+    var router;
+    var tap;
+
+    var $appView = $('#app-view');
 
     /**
     * Model for checklist items
@@ -48,10 +42,7 @@ $(function () {
         },
 
         initialize: function () {
-            if (!this.get('title')) {
-                this.set({'title' : this.defaults.title});
-            }
-            this.bind('error', function (model, error) {
+            this.bind('invalid', function (model, error) {
                 console.error(error);
             });
         },
@@ -76,15 +67,17 @@ $(function () {
         localStorage: new Store('items'),
 
         done: function () {
-            return this.filter(function (item) { return item.get('done'); });
+            return this.where({done: true});
         },
 
         remaining: function () {
-            return this.without.apply(this, this.done());
+            return this.where({done: false});
         },
 
         nextOrder: function () {
-            if (!this.length) { return 1; }
+            if (!this.length) {
+                return 1;
+            }
             return this.last().get('order') + 1;
         }
     });
@@ -116,7 +109,7 @@ $(function () {
         add: function (id) {
             var listView = new ListView({collection: this.collection});
             this.appView.showView(listView);
-            this.collection.fetch();
+            this.collection.fetch({reset: true});
             $('#new-item-name').val(decodeURIComponent(id.replace(/\+/g, ' ')));
         },
 
@@ -136,7 +129,7 @@ $(function () {
         defaultRoute: function () {
             var listView = new ListView({collection: this.collection});
             this.appView.showView(listView);
-            this.collection.fetch();
+            this.collection.fetch({reset:true});
         }
 
     });
@@ -146,10 +139,12 @@ $(function () {
     */
     ViewManager = Backbone.View.extend({
         showView: function (view) {
-            if (this.currentView) { this.currentView.destroy(); }
+            if (this.currentView) {
+                this.currentView.destroy();
+            }
             this.currentView = view;
             this.currentView.render();
-            $('#app-view').html(this.currentView.el);
+            $appView.html(this.currentView.el);
         }
     });
 
@@ -170,8 +165,8 @@ $(function () {
         },
 
         initialize: function () {
-            this.model.bind('change', this.render, this);
-            this.model.bind('destroy', this.remove, this);
+            this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'destroy', this.remove);
         },
 
         render: function () {
@@ -194,12 +189,13 @@ $(function () {
         },
 
         editOnEnter: function (e) {
-            if (e.keyCode !== 13) { return; }
+            if (e.keyCode !== 13) {
+                return;
+            }
             router.navigate('edit/' + this.model.get('id'), {trigger: true});
         },
 
         remove: function () {
-            $(this.el).unbind();
             $(this.el).remove();
         },
 
@@ -262,7 +258,7 @@ $(function () {
             });
             mail += 'subject=' + encodeURIComponent(subject);
             mail += '&body=' + encodeURIComponent(list);
-            mail += encodeURIComponent('\n\nCreate your own list at: http://alexgibson.github.com/checklist/\n');
+            mail += encodeURIComponent('\n\nCreate your own checklist at: http://alxgbsn.co.uk/checklist/\n');
             $('#maillink').attr('href', mail);
             return false;
         },
@@ -283,7 +279,7 @@ $(function () {
                     this.collection.models[0].destroy();
                 }
             }
-            router.navigate("", {trigger: true});
+            router.navigate('', {trigger: true});
         },
 
         closeSettings: function () {
@@ -291,7 +287,9 @@ $(function () {
         },
 
         closeOnEnter: function (e) {
-            if (e.keyCode !== 13) { return; }
+            if (e.keyCode !== 13) {
+                return;
+            }
             this.updateCollection();
         },
 
@@ -312,7 +310,7 @@ $(function () {
 
         events: {
             'tap #save-edit'        : 'saveItem',
-            'click #clear'          : 'clearItem',
+            'click #delete'          : 'deleteItem',
             'keypress #edit-field'  : 'saveOnEnter',
             'keypress #save-edit'   : 'saveOnEnter',
             'click #edit-completed' : 'toggleDone'
@@ -321,7 +319,7 @@ $(function () {
         initialize: function (options) {
             this.model = options.model;
             this.bind('rendered', this.afterRender, this);
-            this.clear = false;
+            this.delete = false;
         },
 
         render: function () {
@@ -334,8 +332,10 @@ $(function () {
         },
 
         saveItem: function () {
-            if (this.input === '') { return; }
-            if (this.clear) {
+            if (this.input === '') {
+                return;
+            }
+            if (this.delete) {
                 this.model.destroy();
             } else {
                 this.input = $('#edit-field').val();
@@ -346,7 +346,9 @@ $(function () {
 
         saveOnEnter: function (e) {
             var text = $('#edit-field').val();
-            if (!text || e.keyCode !== 13) { return; }
+            if (!text || e.keyCode !== 13) {
+                return;
+            }
             e.preventDefault();
             this.saveItem();
         },
@@ -355,14 +357,14 @@ $(function () {
             this.model.toggle();
         },
 
-        clearItem: function () {
-            this.clear = !this.clear;
+        deleteItem: function () {
+            this.delete = !this.delete;
         },
 
         updateShareLink: function () {
-            var mail = 'mailto:?',
-                subject = 'New item for your checklist',
-                item = this.model.get('text');
+            var mail = 'mailto:?';
+            var subject = 'New item for your checklist';
+            var item = this.model.get('text');
 
             mail += 'subject=' + encodeURIComponent(subject);
             mail += '&body=' + 'http://alexgibson.github.com/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
@@ -398,9 +400,9 @@ $(function () {
 
         initialize: function (options) {
             this.collection = options.collection;
-            this.collection.bind('add',   this.addOne, this);
-            this.collection.bind('reset', this.addAll, this);
-            this.collection.bind('all',   this.render, this);
+            this.listenTo(this.collection, 'add', this.addOne);
+            this.listenTo(this.collection, 'reset', this.addAll);
+            this.listenTo(this.collection, 'all', this.render);
         },
 
         render: function () {
@@ -457,11 +459,7 @@ $(function () {
         },
 
         destroy: function () {
-            this.unbind();
             this.remove();
-            this.collection.unbind('add', this.addOne);
-            this.collection.unbind('reset', this.addAll);
-            this.collection.unbind('all', this.render);
         }
 
     });

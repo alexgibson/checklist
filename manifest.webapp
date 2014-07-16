@@ -3,9 +3,9 @@
 	"description": "A mobile web app for creating quick to-do lists.",
 	"launch_path": "/checklist/",
 	"icons": {
-		"30": "/checklist/images/ffos-30.png",
-		"60": "/checklist/images/ffos-60.png",
-		"128": "/checklist/images/ff-128.png"
+		"30": "/checklist/images/app-icon-30x30.png",
+		"60": "/checklist/images/app-icon-60x60.png",
+		"128": "/checklist/images/app-icon-128x128.png"
 	},
 	"developer": {
 		"name": "Alex Gibson",

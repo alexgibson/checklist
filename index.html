@@ -61,100 +61,100 @@ ga('send', 'pageview');
 
 <!-- Empty list template -->
 <script type="text/template" id="empty-list-template">
-    <% if (total === 0) { %>
-        <p>Add an item to get started.</p>
-    <% } %>
+  <% if (total === 0) { %>
+    <p>Add an item to get started.</p>
+  <% } %>
 </script>
 
 <!-- List template -->
 <script type="text/template" id="list-template">
-    <header>
-        <h1>Checklist</h1>
-        <div id="settings-bar"></div>
-    </header>
-    <form id="new-item-bar">
-        <input type="text" id="new-item-name" placeholder="Add an item&hellip;">
-    </form>
-    <div id="content">
-        <div id="todo-stats"></div>
-        <ul id="todo-list"></ul>
-        <div id="get-started"></div>
-    </div>
+  <header>
+    <h1>Checklist</h1>
+    <div id="settings-bar"></div>
+  </header>
+  <form id="new-item-bar">
+    <input type="text" id="new-item-name" placeholder="Add an item&hellip;">
+  </form>
+  <div id="content">
+    <div id="todo-stats"></div>
+    <ul id="todo-list"></ul>
+    <div id="get-started"></div>
+  </div>
 </script>
 
 <!-- List item template -->
 <script type="text/template" id="item-template">
-    <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-    <label class="item-text <%= done ? 'done' : '' %>"></label>
-    <button type="button" class="edit">Edit item</button>
+  <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+  <label class="item-text <%= done ? 'done' : '' %>"></label>
+  <button type="button" class="edit">Edit item</button>
 </script>
 
 <!-- Completed / remaining bar template -->
 <script type="text/template" id="totals-template">
-    <% if (total) { %>
-        <span id="total-value">Completed: <%= done %></span>
-        <span id="remaining-value">Remaining: <%= remaining %></span>
-    <% } %>
+  <% if (total) { %>
+    <span id="total-value">Completed: <%= done %></span>
+    <span id="remaining-value">Remaining: <%= remaining %></span>
+  <% } %>
 </script>
 
 <!-- Settings menu button template -->
 <script type="text/template" id="settings-bar-template">
-    <% if (total) { %>
-        <button type="button" class="settings">Settings</div>
-    <% } %>
+  <% if (total) { %>
+    <button type="button" class="settings">Settings</div>
+  <% } %>
 </script>
 
 <!-- Edit template -->
 <script type="text/template" id="edit-template">
-    <header>
-        <h1>Edit</h1>
-    </header>
-    <form id="edit-item-bar">
-        <input type="text" id="edit-field" placeholder="Item Name" value="<%= text %>"/>
-    </form>
-    <ul id="edit-item-list">
-        <li>
-            <input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-            <label onclick id="completed-label" for="edit-completed">Completed</label>
-        </li>
-        <li>
-            <input type="checkbox" id="clear" />
-            <label onclick id="clear-label" for="clear">Delete item</label>
-        </li>
-    </ul>
-    <div class="control-container">
-        <button id="save-edit" type="button">Done</button>
-    </div>
-    <div class="share">
-        <a href="mailto:" id="share-item-link">Share item</a>
-    </div>
+  <header>
+    <h1>Edit</h1>
+  </header>
+  <form id="edit-item-bar">
+    <input type="text" id="edit-field" placeholder="Item Name" value="<%= text %>"/>
+  </form>
+  <ul id="edit-item-list">
+    <li>
+      <input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+      <label id="completed-label" for="edit-completed">Completed</label>
+    </li>
+    <li>
+      <input type="checkbox" id="delete" />
+      <label id="delete-label" for="delete">Delete item</label>
+    </li>
+  </ul>
+  <div class="control-container">
+    <button id="save-edit" type="button">Done</button>
+  </div>
+  <div class="share">
+    <a href="mailto:" id="share-item-link">Share item</a>
+  </div>
 </script>
 
 <!-- Settings template -->
 <script type="text/template" id="settings-template">
-    <header>
-        <h1>Settings</h1>
-    </header>
-    <ul id="settings-list">
-        <li>
-            <input type="checkbox" id="delete-completed" />
-            <label onclick id="delete-completed-label" for="delete-completed">Delete completed</label>
-        </li>
-        <li>
-            <input type="checkbox" id="delete-all" />
-            <label onclick id="delete-all-label" for="delete-all">Delete all</label>
-        </li>
-        <li>
-            <input type="checkbox" id="uncheck-all" />
-            <label onclick id="check-all-label" for="uncheck-all">Uncheck all</label>
-        </li>
-    </ul>
-    <div class="control-container">
-        <button type="button" id="close-settings">Done</button>
-    </div>
-    <div class="share">
-        <a href="mailto:" id="maillink">Share list</a>
-    </div>
+  <header>
+    <h1>Settings</h1>
+  </header>
+  <ul id="settings-list">
+    <li>
+      <input type="radio" id="delete-completed" name="setting" />
+      <label id="delete-completed-label" for="delete-completed">Delete completed</label>
+    </li>
+    <li>
+      <input type="radio" id="delete-all" name="setting" />
+      <label id="delete-all-label" for="delete-all">Delete all</label>
+    </li>
+    <li>
+      <input type="radio" id="uncheck-all" name="setting" />
+      <label id="check-all-label" for="uncheck-all">Uncheck all</label>
+    </li>
+  </ul>
+  <div class="control-container">
+    <button type="button" id="close-settings">Done</button>
+  </div>
+  <div class="share">
+    <a href="mailto:" id="maillink">Share list</a>
+  </div>
 </script>
 
 </body>
