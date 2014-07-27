@@ -28,19 +28,35 @@
 
 <!-- JavaScript libs -->
 <script src="js/libs/jquery/jquery-min.js"></script>
-<script src="js/utils/json2.js"></script>
 <script src="js/utils/tap.js"></script>
 <script src="js/libs/underscore/underscore-min.js"></script>
 <script src="js/libs/backbone/backbone-min.js"></script>
 <script src="js/utils/backbone.localStorage-min.js"></script>
 <script src="js/main.js"></script>
 
-<!-- iOS home screen icons -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/iOS-144.png" />
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/iOS-114.png" />
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/iOS-72.png" />
-<link rel="apple-touch-icon-precomposed" href="images/iOS-57.png" />
-<link rel="icon" href="images/iOS-57.png" />
+<!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+<link rel="apple-touch-icon-precomposed" href="images/ios-app-icon-57.png">
+
+<!-- For the iPad mini and the first- and second-generation iPad on iOS ≤ 6: -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ios-app-icon-72.png">
+
+<!-- For the iPad mini and the first- and second-generation iPad on iOS ≥ 7: -->
+<link rel="apple-touch-icon-precomposed" sizes="76x76" href="images/ios-app-icon-76.png">
+
+<!-- For iPhone with high-resolution Retina display running iOS ≤ 6: -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ios-app-icon-114.png">
+
+<!-- For iPhone with high-resolution Retina display running iOS ≥ 7: -->
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/ios-app-icon-120.png">
+
+<!-- For iPad with high-resolution Retina display running iOS ≤ 6: -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ios-app-icon-144.png">
+
+<!-- For iPad with high-resolution Retina display running iOS ≥ 7: -->
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="images/ios-app-icon-152.png">
+
+<!-- Chrome v31+ for Android -->
+<link rel="icon" sizes="196x196" href="images/app-icon-196.png">
 
 <!-- Google Analytics -->
 <script>
@@ -126,7 +142,7 @@ ga('send', 'pageview');
     <button id="save-edit" type="button">Done</button>
   </div>
   <div class="share">
-    <a href="mailto:" id="share-item-link">Share item</a>
+    <a href="mailto:" id="share-item-link">Email item</a>
   </div>
 </script>
 
@@ -153,7 +169,7 @@ ga('send', 'pageview');
     <button type="button" id="close-settings">Done</button>
   </div>
   <div class="share">
-    <a href="mailto:" id="maillink">Share list</a>
+    <a href="mailto:" id="maillink">Email list</a>
   </div>
 </script>
 

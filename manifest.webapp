@@ -1,19 +1,27 @@
 {
-	"name": "Checklist",
-	"description": "A mobile web app for creating quick to-do lists.",
-	"launch_path": "/checklist/",
-	"icons": {
-		"30": "/checklist/images/app-icon-30x30.png",
-		"60": "/checklist/images/app-icon-60x60.png",
-		"128": "/checklist/images/app-icon-128x128.png"
-	},
-	"developer": {
-		"name": "Alex Gibson",
-		"url": "http://alxgbsn.co.uk"
-	},
-	"default_locale": "en",
-	"appcache_path": "/checklist/web.appcache",
-	"fullscreen": "true",
-	"type": "web",
-	"installs_allowed_from": ["*"]
+    "name": "Checklist",
+    "description": "A mobile web app for creating quick to-do lists.",
+    "launch_path": "/checklist/",
+    "icons": {
+        "32": "/checklist/images/fx-app-icon-32.png",
+        "60": "/checklist/images/fx-app-icon-60.png",
+        "90": "/checklist/images/fx-app-icon-90.png",
+        "120": "/checklist/images/fx-app-icon-120.png",
+        "128": "/checklist/images/fx-app-icon-128.png",
+        "256": "/checklist/images/fx-app-icon-256.png"
+    },
+    "developer": {
+        "name": "Alex Gibson",
+        "url": "http://alxgbsn.co.uk"
+    },
+    "default_locale": "en",
+    "appcache_path": "/checklist/web.appcache",
+    "type": "web",
+    "installs_allowed_from": ["*"],
+    "permissions": {
+        storage: {
+            "description": "Utilize localStorage without size limitations.",
+            "access": "Allow"
+        }
+    }
 }
