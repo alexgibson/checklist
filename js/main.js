@@ -23,9 +23,10 @@ $(function () {
 
         defaults: function () {
             return {
-                text:   'empty item',
-                order:  items.nextOrder(),
-                done:   false
+                text: 'empty item',
+                order: items.nextOrder(),
+                priority: false,
+                done: false
             };
         },
 
@@ -39,6 +40,9 @@ $(function () {
             if (!_.isNumber(attribs.order)) {
                 return 'Order attribute must be a number';
             }
+            if (!_.isBoolean(attribs.priority)) {
+                return 'Priority attribute must be a boolean';
+            }
         },
 
         initialize: function () {
@@ -47,8 +51,12 @@ $(function () {
             });
         },
 
-        toggle: function () {
+        toggleDone: function () {
             this.save({done: !this.get('done')});
+        },
+
+        togglePriority: function (val) {
+            this.save({priority: !this.get('priority')});
         },
 
         clear: function () {
@@ -79,6 +87,11 @@ $(function () {
                 return 1;
             }
             return this.last().get('order') + 1;
+        },
+
+        // items are sorted by priority first and original insertion order second
+        comparator: function(item) {
+            return [item.get('priority') ? 0 : 1, item.get('order')];
         }
     });
 
@@ -177,11 +190,12 @@ $(function () {
 
         setText: function () {
             var text = this.model.escape('text');
-            this.$('.item-text').html(text);
+            this.$('.item-text').text(text);
         },
 
-        toggleDone: function () {
-            this.model.toggle();
+        toggleDone: function (e) {
+            e.preventDefault();
+            this.model.toggleDone();
         },
 
         editItem: function () {
@@ -282,7 +296,8 @@ $(function () {
             router.navigate('', {trigger: true});
         },
 
-        closeSettings: function () {
+        closeSettings: function (e) {
+            e.preventDefault();
             this.updateCollection();
         },
 
@@ -290,6 +305,7 @@ $(function () {
             if (e.keyCode !== 13) {
                 return;
             }
+            e.preventDefault();
             this.updateCollection();
         },
 
@@ -310,10 +326,11 @@ $(function () {
 
         events: {
             'tap #save-edit'        : 'saveItem',
-            'click #delete'          : 'deleteItem',
+            'click #delete'         : 'deleteItem',
             'keypress #edit-field'  : 'saveOnEnter',
             'keypress #save-edit'   : 'saveOnEnter',
-            'click #edit-completed' : 'toggleDone'
+            'click #edit-completed' : 'toggleDone',
+            'click #priority'       : 'togglePriority'
         },
 
         initialize: function (options) {
@@ -331,14 +348,15 @@ $(function () {
             this.updateShareLink();
         },
 
-        saveItem: function () {
-            if (this.input === '') {
-                return;
-            }
+        saveItem: function (e) {
+            e.preventDefault();
             if (this.delete) {
                 this.model.destroy();
             } else {
                 this.input = $('#edit-field').val();
+                if (this.input === '') {
+                    return;
+                }
                 this.model.save({text: this.input});
             }
             router.navigate("", {trigger: true});
@@ -349,12 +367,15 @@ $(function () {
             if (!text || e.keyCode !== 13) {
                 return;
             }
-            e.preventDefault();
-            this.saveItem();
+            this.saveItem(e);
         },
 
         toggleDone: function () {
-            this.model.toggle();
+            this.model.toggleDone();
+        },
+
+        togglePriority: function (e) {
+            this.model.togglePriority();
         },
 
         deleteItem: function () {

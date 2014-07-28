@@ -5,7 +5,7 @@
 <title>Checklist</title>
 
 <!-- Meta Viewport -->
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
 <!-- App info -->
 <meta name="description" content="Checklist is simple mobile web app for creating quick to-do lists." />
@@ -100,8 +100,8 @@ ga('send', 'pageview');
 
 <!-- List item template -->
 <script type="text/template" id="item-template">
-  <input class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-  <label class="item-text <%= done ? 'done' : '' %>"></label>
+  <input id="item-<%= order %>" class="check" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+  <label for="item-<%= order %>" class="item-text <%= done ? 'done' : '' %> <%= priority === true ? 'high' : '' %>"></label>
   <button type="button" class="edit">Edit item</button>
 </script>
 
@@ -123,7 +123,7 @@ ga('send', 'pageview');
 <!-- Edit template -->
 <script type="text/template" id="edit-template">
   <header>
-    <h1>Edit</h1>
+    <h1>Edit item</h1>
   </header>
   <form id="edit-item-bar">
     <input type="text" id="edit-field" placeholder="Item Name" value="<%= text %>"/>
@@ -132,6 +132,10 @@ ga('send', 'pageview');
     <li>
       <input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
       <label id="completed-label" for="edit-completed">Completed</label>
+    </li>
+    <li>
+      <input type="checkbox" id="priority" <%= priority === true ? 'checked="checked"' : '' %> />
+      <label id="priority-label" for="priority">High priority</label>
     </li>
     <li>
       <input type="checkbox" id="delete" />
