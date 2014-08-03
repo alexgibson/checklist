@@ -220,16 +220,25 @@ $(function () {
             this.updateEmailLink();
         },
 
+        resetFlags: function () {
+            this.deleteCompletedFlag = false;
+            this.uncheckAllFlag = false;
+            this.deleteAllFlag = false;
+        },
+
         deleteCompleted: function () {
-            this.deleteCompletedFlag = !this.deleteCompletedFlag;
+            this.resetFlags();
+            this.deleteCompletedFlag = true;
         },
 
         deleteAll: function () {
-            this.deleteAllFlag = !this.deleteAllFlag;
+            this.resetFlags();
+            this.deleteAllFlag = true;
         },
 
         uncheckAll: function () {
-            this.uncheckAllFlag = !this.uncheckAllFlag;
+            this.resetFlags();
+            this.uncheckAllFlag = true;
         },
 
         updateEmailLink: function () {
