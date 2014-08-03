@@ -1,25 +1,8 @@
 $(function () {
 
-    var Item;
-    var ItemList;
-    var AppRouter;
-    var ViewManager;
-    var ItemView;
-    var SettingsView;
-    var EditView;
-    var ListView;
-    var items;
-    var appView;
-    var router;
-    var tap;
-
     var $appView = $('#app-view');
 
-    /**
-    * Model for checklist items
-    * Sets defaults & performs data validation on initialisation of new model items.
-    */
-    Item = Backbone.Model.extend({
+    var Item = Backbone.Model.extend({
 
         defaults: function () {
             return {
@@ -64,11 +47,7 @@ $(function () {
         }
     });
 
-    /**
-    * A collection of Item model data which is saved to the browser using localStorage.
-    * Includes methods for items counts and finding the next order value for new items
-    */
-    ItemList = Backbone.Collection.extend({
+    var ItemList = Backbone.Collection.extend({
 
         model: Item,
 
@@ -95,14 +74,11 @@ $(function () {
         }
     });
 
-    /**
-    * Responsible for listening for URL hash changes and dispatching each route to appropriate view handler
-    */
-    AppRouter = Backbone.Router.extend({
+    var AppRouter = Backbone.Router.extend({
 
         routes: {
             '':             'defaultRoute',
-            'settings':     'settings',
+            'edit-list':    'editList',
             'add/:id':      'add',
             'edit/:id':     'edit'
         },
@@ -112,11 +88,11 @@ $(function () {
             this.appView = options.appView;
         },
 
-        settings: function () {
-            var settingsView = new SettingsView({collection: this.collection});
-            this.appView.showView(settingsView);
+        editList: function () {
+            var editListView = new EditListView({collection: this.collection});
+            this.appView.showView(editListView);
             this.collection.fetch();
-            settingsView.trigger('rendered');
+            editListView.trigger('rendered');
         },
 
         add: function (id) {
@@ -147,10 +123,7 @@ $(function () {
 
     });
 
-    /**
-    * Responsible for ensuring old views are destroyed before rendering a new view
-    */
-    ViewManager = Backbone.View.extend({
+    var ViewManager = Backbone.View.extend({
         showView: function (view) {
             if (this.currentView) {
                 this.currentView.destroy();
@@ -161,10 +134,7 @@ $(function () {
         }
     });
 
-    /**
-    * Responsible for rendering each checklist item and handling event logic
-    */
-    ItemView = Backbone.View.extend({
+    var ItemView = Backbone.View.extend({
 
         tagName:  'li',
 
@@ -219,21 +189,18 @@ $(function () {
 
     });
 
-    /**
-    * Responsible for rendering settings view and handling event logic
-    */
-    SettingsView = Backbone.View.extend({
+    var EditListView = Backbone.View.extend({
 
         tagName:  'section',
 
-        settingsTemplate: _.template($('#settings-template').html()),
+        settingsTemplate: _.template($('#edit-list-template').html()),
 
         events: {
             'click #delete-completed':      'deleteCompleted',
             'click #delete-all':            'deleteAll',
             'click #uncheck-all':           'uncheckAll',
-            'tap #close-settings':          'closeSettings',
-            'keypress #close-settings':     'closeOnEnter'
+            'tap #close-edit-list':         'closeEditList',
+            'keypress #close-edit-list':    'closeOnEnter'
         },
 
         initialize: function (options) {
@@ -296,7 +263,7 @@ $(function () {
             router.navigate('', {trigger: true});
         },
 
-        closeSettings: function (e) {
+        closeEditList: function (e) {
             e.preventDefault();
             this.updateCollection();
         },
@@ -315,10 +282,7 @@ $(function () {
         }
     });
 
-    /**
-    * Responsible for rendering edit view and handling event logic
-    */
-    EditView = Backbone.View.extend({
+    var EditView = Backbone.View.extend({
 
         tagName:  'section',
 
@@ -400,23 +364,20 @@ $(function () {
 
     });
 
-    /**
-    * Responsible for rendering main list view and handling event logic
-    */
-    ListView = Backbone.View.extend({
+    var ListView = Backbone.View.extend({
 
         tagName:  'section',
 
         statsTemplate: _.template($('#totals-template').html()),
         emptyListTemplate: _.template($('#empty-list-template').html()),
         listTemplate: _.template($('#list-template').html()),
-        settingsTemplate: _.template($('#settings-bar-template').html()),
+        toolbarTemplate: _.template($('#toolbar-template').html()),
 
         events: {
             'keypress #new-item-name'   : 'createOnEnter',
             'tap #add-button'           : 'createOnSubmit',
-            'tap .settings'             : 'openSettings',
-            'keypress .settings'        : 'settingsOnEnter'
+            'tap .edit-list'            : 'openSettings',
+            'keypress .edit-list'       : 'settingsOnEnter'
         },
 
         initialize: function (options) {
@@ -436,7 +397,7 @@ $(function () {
             this.$('#get-started').html(this.emptyListTemplate({
                 total:      length
             }));
-            this.$('#settings-bar').html(this.settingsTemplate({
+            this.$('#toolbar').html(this.toolbarTemplate({
                 total:      length
             }));
             return this;
@@ -471,12 +432,12 @@ $(function () {
         },
 
         openSettings: function () {
-            router.navigate('settings', {trigger: true});
+            router.navigate('edit-list', {trigger: true});
         },
 
         settingsOnEnter: function (e) {
             if (e.keyCode !== 13) { return; }
-            router.navigate('settings', {trigger: true});
+            router.navigate('edit-list', {trigger: true});
         },
 
         destroy: function () {
@@ -485,14 +446,11 @@ $(function () {
 
     });
 
-    /**
-    * App config and init
-    */
+    var items = new ItemList();
+    var appView = new ViewManager();
+    var router = new AppRouter({collection: items, appView: appView});
+    var tap = new Tap(document.getElementById('app-view'));
 
-    items = new ItemList();
-    appView = new ViewManager();
-    router = new AppRouter({collection: items, appView: appView});
-    tap = new Tap(document.getElementById('app-view'));
     Backbone.history.start();
 
 });

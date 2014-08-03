@@ -24,6 +24,7 @@
 <meta name="format-detection" content="telephone=no" />
 
 <!-- CSS styles -->
+<link rel="stylesheet" href="css/normalize.css" />
 <link rel="stylesheet" href="css/styles.css" />
 
 <!-- JavaScript libs -->
@@ -86,7 +87,7 @@ ga('send', 'pageview');
 <script type="text/template" id="list-template">
   <header>
     <h1>Checklist</h1>
-    <div id="settings-bar"></div>
+    <div id="toolbar"></div>
   </header>
   <form id="new-item-bar">
     <input type="text" id="new-item-name" placeholder="Add an item&hellip;">
@@ -114,9 +115,9 @@ ga('send', 'pageview');
 </script>
 
 <!-- Settings menu button template -->
-<script type="text/template" id="settings-bar-template">
+<script type="text/template" id="toolbar-template">
   <% if (total) { %>
-    <button type="button" class="settings">Settings</div>
+    <button type="button" class="edit-list">Edit list</div>
   <% } %>
 </script>
 
@@ -151,11 +152,11 @@ ga('send', 'pageview');
 </script>
 
 <!-- Settings template -->
-<script type="text/template" id="settings-template">
+<script type="text/template" id="edit-list-template">
   <header>
     <h1>Settings</h1>
   </header>
-  <ul id="settings-list">
+  <ul id="edit-list-view">
     <li>
       <input type="radio" id="delete-completed" name="setting" />
       <label id="delete-completed-label" for="delete-completed">Delete completed</label>
@@ -170,7 +171,7 @@ ga('send', 'pageview');
     </li>
   </ul>
   <div class="control-container">
-    <button type="button" id="close-settings">Done</button>
+    <button type="button" id="close-edit-list">Done</button>
   </div>
   <div class="share">
     <a href="mailto:" id="maillink">Email list</a>
