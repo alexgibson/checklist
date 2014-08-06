@@ -79,7 +79,6 @@ $(function () {
         routes: {
             '':             'defaultRoute',
             'edit-list':    'editList',
-            'add/:id':      'add',
             'edit/:id':     'edit'
         },
 
@@ -93,13 +92,6 @@ $(function () {
             this.appView.showView(editListView);
             this.collection.fetch();
             editListView.trigger('rendered');
-        },
-
-        add: function (id) {
-            var listView = new ListView({collection: this.collection});
-            this.appView.showView(listView);
-            this.collection.fetch({reset: true});
-            $('#new-item-name').val(decodeURIComponent(id.replace(/\+/g, ' ')));
         },
 
         edit: function (id) {
@@ -317,10 +309,6 @@ $(function () {
             return this;
         },
 
-        afterRender: function () {
-            this.updateShareLink();
-        },
-
         saveItem: function (e) {
             e.preventDefault();
             if (this.delete) {
@@ -332,7 +320,7 @@ $(function () {
                 }
                 this.model.save({text: this.input});
             }
-            router.navigate("", {trigger: true});
+            router.navigate('', {trigger: true});
         },
 
         saveOnEnter: function (e) {
@@ -353,17 +341,6 @@ $(function () {
 
         deleteItem: function () {
             this.delete = !this.delete;
-        },
-
-        updateShareLink: function () {
-            var mail = 'mailto:?';
-            var subject = 'New item for your checklist';
-            var item = this.model.get('text');
-
-            mail += 'subject=' + encodeURIComponent(subject);
-            mail += '&body=' + 'http://alexgibson.github.com/checklist/#add/' + encodeURIComponent(item.replace(/\ /g, '+'));
-            $('#share-item-link').attr('href', mail);
-            return false;
         },
 
         destroy: function () {
