@@ -230,17 +230,12 @@ h1 {
     font-style: italic;
 }
 
-form {
-    position: relative;
-    width: 100%;
-    text-align: center;
-}
-
 #new-item-bar,
 #edit-item-bar {
-    position:fixed;
+    position: fixed;
     top:44px;
     left:0;
+    width: 100%;
     height:44px;
     padding: 7px;
     background: #F7F7F9;
@@ -257,6 +252,7 @@ input[type=text] {
     width: 100%;
     height: 30px;
     padding: 0 8px;
+    color: #000;
     border: 1px solid #C7C7C7;
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -314,6 +310,20 @@ button {
 button:active, button:focus {
     color: #fff;
     background: #00CAF2;
+}
+
+.notes-container {
+    padding: 5px 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    margin: 0;
+    padding: 5px;
+    color: #000;
+    resize: none;
+    border: 1px solid #C7C7C7;
 }
 
 .share {

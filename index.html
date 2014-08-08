@@ -78,9 +78,9 @@ ga('send', 'pageview');
     <h1>Checklist</h1>
     <div id="toolbar"></div>
   </header>
-  <form id="new-item-bar">
+  <div id="new-item-bar">
     <input type="text" id="new-item-name" placeholder="Add an item&hellip;">
-  </form>
+  </div>
   <div id="content">
     <div id="todo-stats"></div>
     <ul id="todo-list"></ul>
@@ -115,9 +115,9 @@ ga('send', 'pageview');
   <header>
     <h1>Edit item</h1>
   </header>
-  <form id="edit-item-bar">
+  <div id="edit-item-bar">
     <input type="text" id="edit-field" placeholder="Item Name" value="<%= text %>"/>
-  </form>
+  </div>
   <ul id="edit-item-list">
     <li>
       <input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
@@ -132,6 +132,9 @@ ga('send', 'pageview');
       <label id="delete-label" for="delete">Delete item</label>
     </li>
   </ul>
+  <div class="notes-container">
+    <textarea id="notes" placeholder="Notes&hellip;"></textarea>
+  </div>
   <div class="control-container">
     <button id="save-edit" type="button">Done</button>
   </div>

@@ -2,12 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
-var manifest = require('gulp-manifest');
-
-var paths = {
-    scripts: ['src/js/*.js'],
-    styles: ['src/css/*.css']
-};
+var manifest = require('gulp-appcache');
 
 gulp.task('scripts', function() {
     gulp.src([
@@ -36,16 +31,18 @@ gulp.task('styles', function() {
 gulp.task('manifest', function() {
     gulp.src(['dist/**/*'])
         .pipe(manifest({
+            relativePath: '/dist',
             timestamp: true,
             filename: 'web.appcache',
-            exclude: 'web.appcache'
+            exclude: ['src/**/*.js']
         }))
         .pipe(gulp.dest('./'));
 });
 
 gulp.task('watch', function() {
-    gulp.watch(paths.scripts, ['scripts']);
-    gulp.watch(paths.styles, ['styles', 'manifest']);
+    gulp.watch('src/js/*.js', ['scripts']);
+    gulp.watch('src/css/*.css', ['styles']);
+    gulp.watch('index.html', ['manifest']);
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['scripts', 'styles', 'manifest', 'watch']);

@@ -1,15 +1,15 @@
 {
   "name": "checklist",
-  "version": "4.0",
+  "version": "4.0.0",
   "description": "A mobile web app for creating quick to-do lists.",
   "private": true,
   "dependencies": {},
   "devDependencies": {
     "gulp": "~3.8.7",
     "gulp-concat": "~2.3.4",
-    "gulp-manifest": "~0.0.6",
     "gulp-minify-css": "~0.3.7",
-    "gulp-uglify": "~0.3.1"
+    "gulp-uglify": "~0.3.1",
+    "gulp-appcache": "0.0.4"
   },
   "repository": {
     "type": "git",
