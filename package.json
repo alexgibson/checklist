@@ -1,6 +1,6 @@
 {
   "name": "checklist",
-  "version": "3.0.0",
+  "version": "4.0",
   "description": "A mobile web app for creating quick to-do lists.",
   "private": true,
   "dependencies": {},

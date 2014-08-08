@@ -5,8 +5,8 @@ var minifyCSS = require('gulp-minify-css');
 var manifest = require('gulp-manifest');
 
 var paths = {
-  scripts: ['src/js/*.js'],
-  styles: ['src/css/*.css']
+    scripts: ['src/js/*.js'],
+    styles: ['src/css/*.css']
 };
 
 gulp.task('scripts', function() {
@@ -48,5 +48,4 @@ gulp.task('watch', function() {
     gulp.watch(paths.styles, ['styles', 'manifest']);
 });
 
-// The default task (called when you run `gulp` from cli)
 gulp.task('default', ['watch']);
