@@ -1,0 +1,24 @@
+{
+  "name": "checklist",
+  "version": "4.0.0",
+  "description": "A mobile web app for creating quick to-do lists.",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "~3.8.7",
+    "gulp-concat": "~2.3.4",
+    "gulp-minify-css": "~0.3.7",
+    "gulp-uglify": "~0.3.1",
+    "gulp-appcache": "0.0.4",
+    "gulp-gh-pages": "~0.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexgibson/checklist.git"
+  },
+  "author": "Alex Gibson <alxgbsn@gmail.com> (http://alxgbsn.co.uk/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexgibson/checklist/issues"
+  }
+}
