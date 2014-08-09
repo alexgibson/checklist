@@ -9,6 +9,7 @@ $(function () {
                 text: 'empty item',
                 order: items.nextOrder(),
                 priority: false,
+                notes: '',
                 done: false
             };
         },
@@ -25,6 +26,9 @@ $(function () {
             }
             if (!_.isBoolean(attribs.priority)) {
                 return 'Priority attribute must be a boolean';
+            }
+            if (!_.isString(attribs.notes)) {
+                return 'Notes attribute must be a string';
             }
         },
 
@@ -152,7 +156,7 @@ $(function () {
 
         setText: function () {
             var text = this.model.escape('text');
-            this.$('.item-text').text(text);
+            this.$('.item-text').html(text);
         },
 
         toggleDone: function (e) {
@@ -310,15 +314,19 @@ $(function () {
         },
 
         saveItem: function (e) {
+            var item = $('#edit-field').val();
+            var notes = $('#notes').val()
             e.preventDefault();
             if (this.delete) {
                 this.model.destroy();
             } else {
-                this.input = $('#edit-field').val();
-                if (this.input === '') {
+                if (item === '') {
                     return;
                 }
-                this.model.save({text: this.input});
+                this.model.save({
+                    text: item,
+                    notes: notes
+                });
             }
             router.navigate('', {trigger: true});
         },
