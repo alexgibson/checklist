@@ -47,7 +47,10 @@ gulp.task('watch', function() {
 });
 
 gulp.task('deploy', function () {
-    gulp.src('./*')
+    gulp.src([
+        '*',
+        'dist/**/*'
+        ])
         .pipe(deploy());
 });
 
