@@ -31,7 +31,7 @@ gulp.task('styles', function() {
 gulp.task('manifest', function() {
     gulp.src(['dist/**/*'])
         .pipe(manifest({
-            relativePath: '/dist',
+            relativePath: '/checklist/dist',
             timestamp: true,
             filename: 'web.appcache',
             exclude: ['src/**/*.js']
