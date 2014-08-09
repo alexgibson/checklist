@@ -164,7 +164,8 @@ $(function () {
             this.model.toggleDone();
         },
 
-        editItem: function () {
+        editItem: function (e) {
+            e.preventDefault();
             router.navigate('edit/' + this.model.get('id'), {trigger: true});
         },
 
