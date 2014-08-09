@@ -1,10 +1,10 @@
 CACHE MANIFEST
-# Time: Sat Aug 09 2014 21:22:13 GMT+0100 (BST)
+# Time: Sat Aug 09 2014 21:32:01 GMT+0100 (BST)
 
 
 CACHE:
-/dist/css/styles.css
-/dist/js/app.js
+/checklist/dist/css/styles.css
+/checklist/dist/js/app.js
 
 
 NETWORK:
