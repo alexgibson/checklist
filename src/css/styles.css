@@ -277,6 +277,7 @@ label {
     float: left;
     width: 75%;
     color: #000;
+    background: transparent;
     font-weight: normal;
     padding: 0 0 10px 10px;
     word-wrap: break-word;
