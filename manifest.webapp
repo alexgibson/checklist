@@ -19,9 +19,8 @@
     "type": "web",
     "installs_allowed_from": ["*"],
     "permissions": {
-        storage: {
-            "description": "Utilize localStorage without size limitations.",
-            "access": "Allow"
+        "storage": {
+            "description": "Utilize localStorage without size limitations."
         }
     }
 }
