@@ -49,6 +49,7 @@ gulp.task('watch', function() {
 gulp.task('deploy', function () {
     gulp.src([
         '*',
+        'images/*',
         'dist/**/*'
         ])
         .pipe(deploy());
