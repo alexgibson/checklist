@@ -10,7 +10,6 @@ gulp.task('scripts', function() {
         'src/js/underscore-min.js',
         'src/js/backbone-min.js',
         'src/js/backbone.localstorage-min.js',
-        'src/js/tap.js',
         'src/js/main.js'
         ])
         .pipe(concat('app.js'))

@@ -1,4 +1,5 @@
 $(function () {
+    'use strict';
 
     var $appView = $('#app-view');
 
@@ -10,6 +11,10 @@ $(function () {
                 order: items.nextOrder(),
                 priority: false,
                 notes: '',
+                reminderOffset: -1,
+                reminderId: null,
+                date: this.getDate(),
+                time: this.getTime(),
                 done: false
             };
         },
@@ -30,6 +35,15 @@ $(function () {
             if (!_.isString(attribs.notes)) {
                 return 'Notes attribute must be a string';
             }
+            if (!_.isString(attribs.date)) {
+                return 'Date attribute must be a string';
+            }
+            if (!_.isString(attribs.time)) {
+                return 'Time attribute must be a string';
+            }
+            if (!_.isNumber(attribs.reminderOffset)) {
+                return 'Reminder offset attribute must be a number';
+            }
         },
 
         initialize: function () {
@@ -44,6 +58,21 @@ $(function () {
 
         togglePriority: function (val) {
             this.save({priority: !this.get('priority')});
+        },
+
+        getDate: function () {
+            var d = new Date();
+            var yyyy = d.getFullYear();
+            var mm = ((d.getMonth() + 1) < 10 ? '0' : '') + (d.getMonth() +1);
+            var dd = (d.getDate() < 10 ? '0' : '') + d.getDate();
+            return yyyy + '-' + mm + '-' + dd;
+        },
+
+        getTime: function () {
+            var d = new Date();
+            var h = (d.getHours() < 10 ? '0' : '') + d.getHours();
+            var m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+            return h + ':' + m;
         },
 
         clear: function () {
@@ -138,8 +167,8 @@ $(function () {
 
         events: {
             'click .check'      : 'toggleDone',
-            'tap .item-text'    : 'toggleDone',
-            'tap .edit'         : 'editItem',
+            'click .item-text'  : 'toggleDone',
+            'click .edit'       : 'editItem',
             'keypress .edit'    : 'editOnEnter'
         },
 
@@ -196,7 +225,7 @@ $(function () {
             'click #delete-completed':      'deleteCompleted',
             'click #delete-all':            'deleteAll',
             'click #uncheck-all':           'uncheckAll',
-            'tap #close-edit-list':         'closeEditList',
+            'click #close-edit-list':       'closeEditList',
             'keypress #close-edit-list':    'closeOnEnter'
         },
 
@@ -251,8 +280,10 @@ $(function () {
         },
 
         updateCollection: function () {
+            var that = this;
             if (this.deleteCompletedFlag) {
                 _.each(this.collection.done(), function (model) {
+                    _reminders.remove(model.get('reminderId'));
                     model.clear();
                 });
             }
@@ -262,6 +293,7 @@ $(function () {
                 });
             }
             if (this.deleteAllFlag) {
+                _reminders.removeAll();
                 while (this.collection.models.length > 0) {
                     this.collection.models[0].destroy();
                 }
@@ -295,7 +327,7 @@ $(function () {
         editTemplate: _.template($('#edit-template').html()),
 
         events: {
-            'tap #save-edit'        : 'saveItem',
+            'click #save-edit'      : 'saveItem',
             'click #delete'         : 'deleteItem',
             'keypress #edit-field'  : 'saveOnEnter',
             'keypress #save-edit'   : 'saveOnEnter',
@@ -314,22 +346,22 @@ $(function () {
             return this;
         },
 
-        saveItem: function (e) {
-            var item = $('#edit-field').val();
-            var notes = $('#notes').val()
-            e.preventDefault();
-            if (this.delete) {
-                this.model.destroy();
-            } else {
-                if (item === '') {
-                    return;
-                }
-                this.model.save({
-                    text: item,
-                    notes: notes
-                });
+        afterRender: function () {
+            if (navigator.mozAlarms) {
+                $('#reminder').show();
             }
-            router.navigate('', {trigger: true});
+        },
+
+        saveItem: function (e) {
+            e.preventDefault();
+
+            var item = $('#edit-field').val();
+            var reminderOffset = parseInt($('#reminder-offset').val(), 10);
+            var reminderId = this.model.get('reminderId');
+
+            if (item !== '') {
+                this.updateReminder(reminderId, reminderOffset);
+            }
         },
 
         saveOnEnter: function (e) {
@@ -348,8 +380,69 @@ $(function () {
             this.model.togglePriority();
         },
 
-        deleteItem: function () {
-            this.delete = !this.delete;
+        deleteItem: function (e) {
+            e.preventDefault();
+
+            if (confirm('Delete item ' + this.model.get('text') + '?')) {
+                _reminders.remove(this.model.get('reminderId'));
+                this.model.destroy();
+                router.navigate('', {trigger: true});
+            }
+        },
+
+        updateReminder: function (id, offset) {
+
+            // clear any previous reminder before updating
+            _reminders.remove(id);
+
+            if (offset >= 0) {
+                console.log('setting reminder');
+                this.setReminder(offset);
+            } else {
+                console.log('closing view without setting reminder');
+                this.saveCloseView();
+            }
+        },
+
+        setReminder: function (offset) {
+            var d = $('#reminder-date').val();
+            var t = $('#reminder-time').val();
+            var date = new Date(d + 'T' + t + ':00');
+
+            date.setMinutes(date.getMinutes() - offset);
+
+            var alarmData = {
+                text: this.model.get('text')
+            };
+
+            if (date <= new Date()) {
+                console.log('reminder already in the past, not setting');
+                this.saveCloseView(null, -1);
+                return;
+            }
+
+            _reminders.add(date, alarmData, offset, this.saveCloseView, this);
+        },
+
+        saveCloseView: function (id, offset) {
+
+            var item = $('#edit-field').val();
+            var notes = $('#notes').val();
+            var date = $('#reminder-date').val();
+            var time = $('#reminder-time').val();
+            var reminderId = id || null;
+            var reminderOffset = offset >= 0 ? offset : -1;
+
+            this.model.save({
+                text: item,
+                notes: notes,
+                date: date,
+                time: time,
+                reminderId: reminderId,
+                reminderOffset: reminderOffset
+            });
+
+            router.navigate('', {trigger: true});
         },
 
         destroy: function () {
@@ -370,8 +463,7 @@ $(function () {
 
         events: {
             'keypress #new-item-name'   : 'createOnEnter',
-            'tap #add-button'           : 'createOnSubmit',
-            'tap .edit-list'            : 'openSettings',
+            'click .edit-list'          : 'openSettings',
             'keypress .edit-list'       : 'settingsOnEnter'
         },
 
@@ -417,15 +509,6 @@ $(function () {
             input.val('').blur();
         },
 
-        createOnSubmit: function (e) {
-            var input = $('#new-item-name'),
-                text = input.val();
-            if (!text) { return; }
-            e.preventDefault();
-            this.collection.create({text: text});
-            input.val('');
-        },
-
         openSettings: function () {
             router.navigate('edit-list', {trigger: true});
         },
@@ -441,11 +524,86 @@ $(function () {
 
     });
 
+    var _reminders = {
+
+        bind: function () {
+            var img = window.location.origin + '/checklist/images/fx-app-icon-128.png';
+            if (navigator.mozAlarms && 'Notification' in window) {
+                navigator.mozSetMessageHandler('alarm', function(message) {
+                    new Notification('Checklist', {
+                        body: message.data.text,
+                        icon: img
+                    });
+                });
+            }
+        },
+
+        add: function (date, data, offset, callback, context) {
+            var request;
+
+            if (navigator.mozAlarms) {
+                request = navigator.mozAlarms.add(date, 'ignoreTimezone', data);
+
+                request.onsuccess = function () {
+                    var alarms = navigator.mozAlarms.getAll();
+
+                    alarms.onsuccess = function () {
+                        if (this.result.length) {
+                            var id = this.result[(this.result.length)-1].id;
+                            // console.log('saving reminder: ' + id);
+                            // console.log('saving offset: ' + offset);
+                            if (typeof callback === 'function') {
+                                callback.call(context, id, offset);
+                            }
+                        }
+                    };
+
+                    alarms.onerror = function (error) {
+                        // console.log(error);
+                        if (typeof callback === 'function') {
+                            callback.call(context, null, -1);
+                        }
+                    }
+                };
+            }
+        },
+
+        remove: function (id) {
+            if (navigator.mozAlarms && id) {
+                // console.log('removing reminder: ' + id);
+                navigator.mozAlarms.remove(id);
+            }
+        },
+
+        removeAll: function () {
+            var alarms;
+
+            if (navigator.mozAlarms) {
+                alarms = navigator.mozAlarms.getAll();
+
+                alarms.onsuccess = function () {
+                    if (this.result.length) {
+                        this.result.forEach(function (reminder) {
+                            // console.log('removing reminder: ' + reminder.id);
+                            navigator.mozAlarms.remove(reminder.id);
+                        });
+                    }
+                };
+
+                alarms.onerror = function (error) {
+                    console.log(error);
+                };
+            }
+        }
+    };
+
     var items = new ItemList();
     var appView = new ViewManager();
     var router = new AppRouter({collection: items, appView: appView});
-    var tap = new Tap(document.getElementById('app-view'));
+
+    // hack to enable active pseudo styles in iOS Safari
+    document.addEventListener('touchstart', function() {},false);
 
     Backbone.history.start();
-
+    _reminders.bind();
 });

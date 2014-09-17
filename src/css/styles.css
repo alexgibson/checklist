@@ -67,7 +67,7 @@ section {
 
 #get-started p:before {
     position: absolute;
-    top: -44px;
+    top: -30px;
     left: 50%;
     width: 20px;
     height: 44px;
@@ -90,7 +90,7 @@ ul > li {
     font-weight: bold;
     text-align: left;
     overflow: hidden;
-    border-bottom: 1px solid #E8E8E8;
+    border-top: 1px solid #E8E8E8;
 }
 
 ul > li.loading {
@@ -104,7 +104,7 @@ ul > li.loading {
 
 #todo-stats {
     color: #999;
-    border-bottom: 1px solid #E8E8E8;
+    background: #F7F7F9;
     overflow: hidden;
 }
 
@@ -193,7 +193,7 @@ ul > li.loading {
 .edit-list:active,
 .edit-list:focus {
     background-color: transparent;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAABPUlEQVRIx2NgGAXUAv9Z/kf87/yvQb4BKf+//P///5AFF7kGXPgPBuHOxKlv4kAT+JX9/+///68fiMoQZV1TdS6G4HzDymJFosLgf8j//3ml5IeWNsirtenkahf+/+r//79fjY3J0874/zzIfp9gbJJK/30JGrAOpL0am///J///BEoH5njSwf9ukPZ5s4lMB8DAOhpjhKQiEyS/fzcDI1YDfuX8//f//5uHorIwkX/r////cwWu3R2k/flNbkGcDpxvVF2mrIXg/7H4BzRy31SwdtX/v/7///VRQ5ukMP8SBzTh/y3nN9z/n4Hsd/IkOdp+LQTq+/bnEUh7bhYZ8f6d8ec9SOBOm0A4kSj/98fiDdWfb/7/X7qYgvLAS1TPBEfUoRhwnrTyADO4wOXBKyLLA6xgHtHlwSgYfAAAE8POT3VqXTMAAAAASUVORK5CYII=);
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACDUlEQVR42u2Xv0sCYRjH8ydkRo2hLVERZVKSUNBYCIHkGAQtFyUuTf0JRlM4BEFnDg4ubQlCkyGEY7ic0NBggYRQCf7KX/f2PXhvSNS7wzMb/MIHzvce7/3e6/O87+MIIWSgDA0MDbQbtIN1JQ9RIEkDx4AHpFQqnQ3CwD2hKhQKz4i3qGUAcRNyDHgJFcdx14hfVMMAYnQghkudZA7E4/GtYDB4iOA1YFHJwBUQAudkVQFkAmY1cgD3TwiV8FL9KMNuk++CBiC5XC7+pwZoOZdoQnM2m20Tw7NyDNiAsxcDGJsGb4DUarV3hmF2hIQGWikDPnEfKJfL510mNXYygM8m8ARIs9msBAKBAwzbgVFOGT4QqmKx2GkfcINHlKloorXc7oAgPhqNnmLYAUxijPQKUKXT6RvEL7Xc14MsIJlMhsV9TYuBC0KVSqUuaSlPyt8JQSKRcIVCoSODweBstwKNRoMR3zCZTO5TA7/MZ7PZGJ18StlWTIHGuu0DOCduaYJ9RCKReVy6xHLL5/Mpq9W6ge/PyD8LlGOuVqsvBKrX61+CF0Aqlcqrx+PZxjwLQNM3A3QVHDzPfxMq/DQFv9+/hzmWgR60k7r9AJbbBxN16DMcDnvx/FUw2stx7FXaD7jdbisSVki4FTA+qH5AC6TV/35AWrL6AZZlGSX9gBL1tx+Q1vB/wdDA/zPwA05hxh/5DoPDAAAAAElFTkSuQmCC);
     background-size: 32px 32px;
     background-position: center;
     background-repeat: no-repeat;
@@ -215,7 +215,7 @@ header {
     width: 100%;
     height: 44px;
     color: #fff;
-    background: #F97C17;
+    background: #f97c17;
     z-index: 2;
 }
 
@@ -228,10 +228,12 @@ h1 {
     line-height: 44px;
     font-weight: normal;
     font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-#new-item-bar,
-#edit-item-bar {
+#new-item-bar {
     position: fixed;
     top:44px;
     left:0;
@@ -239,15 +241,34 @@ h1 {
     height:44px;
     padding: 7px;
     background: #F7F7F9;
-    z-index: 2;
     border-bottom: 1px solid #E8E8E8;
+    z-index: 2;
 }
 
 #edit-item-list {
-    padding-top: 88px;
+    padding-top: 44px;
 }
 
-input[type=text] {
+#edit-item-list li {
+    padding: 12px 10px 0 10px;
+}
+
+#edit-item-list li.primary {
+    background: #F7F7F9;
+}
+
+#edit-field-label {
+    padding: 0;
+}
+
+#edit-field {
+    width: 100%;
+    margin: 5px 0 10px 0;
+}
+
+input[type=text],
+input[type=time],
+input[type=date] {
     font: 17px Helvetica, Arial, Verdana, sans-serif;
     width: 100%;
     height: 30px;
@@ -272,6 +293,12 @@ input[type=radio] {
     cursor: pointer;
 }
 
+select {
+    font: 17px Helvetica, Arial, Verdana, sans-serif;
+    padding: 5px;
+    width: 100%;
+}
+
 label {
     display: block;
     float: left;
@@ -288,12 +315,46 @@ label {
     cursor: pointer;
 }
 
+legend {
+    color: #000;
+    padding: 0 5px;
+}
+
 .control-container {
     padding: 0 7px;
+    margin-bottom: 10px;
+}
+
+#reminder {
+    display: none;
+}
+
+#reminder ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#reminder ul li {
+    margin: 0;
+    padding: 0;
+    line-height: 44px;
+    border-bottom: none;
+}
+
+#reminder label {
+    width: auto;
+    padding: 0;
+}
+
+#reminder input,
+#reminder select {
+    float: right;
+    width: 60%;
+    margin-top: 7px;
 }
 
 button {
-    float: right;
     font: 17px Helvetica, Arial, Verdana, sans-serif;
     font-weight: normal;
     font-style: italic;
@@ -308,13 +369,29 @@ button {
     cursor: pointer;
 }
 
-button:active, button:focus {
+button.warning {
+    color: #fff;
+    background: #e51e1e;
+}
+
+button:active,
+button:focus,
+button.warning:active,
+button.warning:focus {
     color: #fff;
     background: #00CAF2;
 }
 
+#delete {
+    margin-bottom: 44px;
+}
+
 .notes-container {
     padding: 5px 10px;
+}
+
+.notes-container label {
+    padding: 0 0 10px 0;
 }
 
 textarea {
