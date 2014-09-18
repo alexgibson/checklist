@@ -21,6 +21,20 @@
     "permissions": {
         "storage": {
             "description": "Utilize localStorage without size limitations."
+        },
+        "desktop-notification" : {
+            "description": "Required to schedule notifications"
+        },
+        "alarms": {
+            "description": "Required to schedule notifications"
         }
-    }
+    },
+    "messages": [
+        {
+            "notification": "checklist/index.html"
+        },
+        {
+            "alarm": "/checklist/index.html"
+        }
+    ]
 }

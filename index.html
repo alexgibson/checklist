@@ -20,6 +20,9 @@
 <!-- iOS prevent tel number format detection -->
 <meta name="format-detection" content="telephone=no" />
 
+<!-- Firefox OS status bar theme color -->
+<meta name="theme-color" content="#df6f14" />
+
 <link rel="stylesheet" href="dist/css/styles.css" />
 
 <script src="dist/js/app.js"></script>
@@ -113,12 +116,13 @@ ga('send', 'pageview');
 <!-- Edit template -->
 <script type="text/template" id="edit-template">
   <header>
-    <h1>Edit item</h1>
+    <h1></h1>
   </header>
-  <div id="edit-item-bar">
-    <input type="text" id="edit-field" placeholder="Item Name" value="<%= text %>"/>
-  </div>
   <ul id="edit-item-list">
+    <li class="primary">
+      <label id="edit-field-label" for="edit-field">Item name:</label>
+      <input type="text" id="edit-field" placeholder="Item name&hellip;" value="<%= text %>"/>
+    </li>
     <li>
       <input id="edit-completed" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
       <label id="completed-label" for="edit-completed">Completed</label>
@@ -127,16 +131,42 @@ ga('send', 'pageview');
       <input type="checkbox" id="priority" <%= priority === true ? 'checked="checked"' : '' %> />
       <label id="priority-label" for="priority">High priority</label>
     </li>
-    <li>
-      <input type="checkbox" id="delete" />
-      <label id="delete-label" for="delete">Delete item</label>
-    </li>
   </ul>
   <div class="notes-container">
-    <textarea id="notes" placeholder="Notes&hellip;"><%= notes %></textarea>
+    <label for="notes">Notes:</label>
+    <textarea id="notes" placeholder="Additional info&hellip;"><%= notes %></textarea>
+  </div>
+  <div class="control-container" id="reminder">
+    <fieldset>
+      <legend>Set reminder</legend>
+      <ul>
+        <li>
+          <label id="reminder-date-label" for="reminder-date">Date</label>
+          <input id="reminder-date" type="date" value="<%= date %>" />
+        </li>
+        <li>
+          <label id="reminder-time-label" for="reminder-time">Time</label>
+          <input id="reminder-time" type="time" value="<%= time %>" />
+        </li>
+        <li>
+          <label id="reminder-label" for="reminder">Notification</label>
+          <select id="reminder-offset">
+            <option value="-1" <%= reminderOffset === -1 ? 'selected="selected"' : '' %> >None</option>
+            <option value="0" <%= reminderOffset === 0 ? 'selected="selected"' : '' %> >At time of event</option>
+            <option value="5" <%= reminderOffset === 5 ? 'selected="selected"' : '' %>>5 minutes before</option>
+            <option value="15" <%= reminderOffset === 15 ? 'selected="selected"' : '' %>>15 minutes before</option>
+            <option value="30" <%= reminderOffset === 30 ? 'selected="selected"' : '' %>>30 minutes before</option>
+            <option value="60" <%= reminderOffset === 60 ? 'selected="selected"' : '' %>>1 hour before</option>
+            <option value="120" <%= reminderOffset === 120 ? 'selected="selected"' : '' %>>2 hours before</option>
+            <option value="1440" <%= reminderOffset === 1440 ? 'selected="selected"' : '' %>>1 day before</option>
+          </select>
+        </li>
+      </ul>
+    </fieldset>
   </div>
   <div class="control-container">
     <button id="save-edit" type="button">Done</button>
+    <button id="delete" class="warning" type="button">Delete item</button>
   </div>
 </script>
 
