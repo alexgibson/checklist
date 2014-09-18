@@ -5,7 +5,7 @@ $(function () {
 
     var Item = Backbone.Model.extend({
 
-        defaults: function () {
+        defaults: function() {
             return {
                 text: 'empty item',
                 order: items.nextOrder(),
@@ -19,7 +19,7 @@ $(function () {
             };
         },
 
-        validate: function (attribs) {
+        validate: function(attribs) {
             if (!_.isString(attribs.text)) {
                 return 'Text attribute must be a string';
             }
@@ -46,21 +46,21 @@ $(function () {
             }
         },
 
-        initialize: function () {
+        initialize: function() {
             this.bind('invalid', function (model, error) {
                 console.error(error);
             });
         },
 
-        toggleDone: function () {
+        toggleDone: function() {
             this.save({done: !this.get('done')});
         },
 
-        togglePriority: function (val) {
+        togglePriority: function(val) {
             this.save({priority: !this.get('priority')});
         },
 
-        getDate: function () {
+        getDate: function() {
             var d = new Date();
             var yyyy = d.getFullYear();
             var mm = ((d.getMonth() + 1) < 10 ? '0' : '') + (d.getMonth() +1);
@@ -68,14 +68,14 @@ $(function () {
             return yyyy + '-' + mm + '-' + dd;
         },
 
-        getTime: function () {
+        getTime: function() {
             var d = new Date();
             var h = (d.getHours() < 10 ? '0' : '') + d.getHours();
             var m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
             return h + ':' + m;
         },
 
-        clear: function () {
+        clear: function() {
             this.destroy();
         }
     });
@@ -86,15 +86,15 @@ $(function () {
 
         localStorage: new Store('items'),
 
-        done: function () {
+        done: function() {
             return this.where({done: true});
         },
 
-        remaining: function () {
+        remaining: function() {
             return this.where({done: false});
         },
 
-        nextOrder: function () {
+        nextOrder: function() {
             if (!this.length) {
                 return 1;
             }
@@ -115,19 +115,19 @@ $(function () {
             'edit/:id':     'edit'
         },
 
-        initialize: function (options) {
+        initialize: function(options) {
             this.collection = options.collection;
             this.appView = options.appView;
         },
 
-        editList: function () {
+        editList: function() {
             var editListView = new EditListView({collection: this.collection});
             this.appView.showView(editListView);
             this.collection.fetch();
             editListView.trigger('rendered');
         },
 
-        edit: function (id) {
+        edit: function(id) {
             var item, editView;
             this.collection.fetch();
             item = this.collection.get(id);
@@ -140,7 +140,7 @@ $(function () {
             }
         },
 
-        defaultRoute: function () {
+        defaultRoute: function() {
             var listView = new ListView({collection: this.collection});
             this.appView.showView(listView);
             this.collection.fetch({reset:true});
@@ -172,44 +172,44 @@ $(function () {
             'keypress .edit'    : 'editOnEnter'
         },
 
-        initialize: function () {
+        initialize: function() {
             this.listenTo(this.model, 'change', this.render);
             this.listenTo(this.model, 'destroy', this.remove);
         },
 
-        render: function () {
+        render: function() {
             $(this.el).html(this.template(this.model.toJSON()));
             this.setText();
             return this;
         },
 
-        setText: function () {
+        setText: function() {
             var text = this.model.escape('text');
             this.$('.item-text').html(text);
         },
 
-        toggleDone: function (e) {
+        toggleDone: function(e) {
             e.preventDefault();
             this.model.toggleDone();
         },
 
-        editItem: function (e) {
+        editItem: function(e) {
             e.preventDefault();
             router.navigate('edit/' + this.model.get('id'), {trigger: true});
         },
 
-        editOnEnter: function (e) {
+        editOnEnter: function(e) {
             if (e.keyCode !== 13) {
                 return;
             }
             router.navigate('edit/' + this.model.get('id'), {trigger: true});
         },
 
-        remove: function () {
+        remove: function() {
             $(this.el).remove();
         },
 
-        clear: function () {
+        clear: function() {
             this.model.clear();
         }
 
@@ -229,7 +229,7 @@ $(function () {
             'keypress #close-edit-list':    'closeOnEnter'
         },
 
-        initialize: function (options) {
+        initialize: function(options) {
             this.bind('rendered', this.afterRender, this);
             this.collection = options.collection;
             this.deleteCompletedFlag = false;
@@ -237,37 +237,37 @@ $(function () {
             this.deleteAllFlag = false;
         },
 
-        render: function () {
+        render: function() {
             $(this.el).html(this.settingsTemplate());
             return this;
         },
 
-        afterRender: function () {
+        afterRender: function() {
             this.updateEmailLink();
         },
 
-        resetFlags: function () {
+        resetFlags: function() {
             this.deleteCompletedFlag = false;
             this.uncheckAllFlag = false;
             this.deleteAllFlag = false;
         },
 
-        deleteCompleted: function () {
+        deleteCompleted: function() {
             this.resetFlags();
             this.deleteCompletedFlag = true;
         },
 
-        deleteAll: function () {
+        deleteAll: function() {
             this.resetFlags();
             this.deleteAllFlag = true;
         },
 
-        uncheckAll: function () {
+        uncheckAll: function() {
             this.resetFlags();
             this.uncheckAllFlag = true;
         },
 
-        updateEmailLink: function () {
+        updateEmailLink: function() {
             var mail = 'mailto:?', subject = 'My list', list = '';
             _.each(this.collection.models, function (model) {
                 list += model.get('text') + '\n';
@@ -279,7 +279,7 @@ $(function () {
             return false;
         },
 
-        updateCollection: function () {
+        updateCollection: function() {
             var that = this;
             if (this.deleteCompletedFlag) {
                 _.each(this.collection.done(), function (model) {
@@ -301,12 +301,12 @@ $(function () {
             router.navigate('', {trigger: true});
         },
 
-        closeEditList: function (e) {
+        closeEditList: function(e) {
             e.preventDefault();
             this.updateCollection();
         },
 
-        closeOnEnter: function (e) {
+        closeOnEnter: function(e) {
             if (e.keyCode !== 13) {
                 return;
             }
@@ -314,7 +314,7 @@ $(function () {
             this.updateCollection();
         },
 
-        destroy: function () {
+        destroy: function() {
             this.unbind();
             this.remove();
         }
@@ -335,24 +335,24 @@ $(function () {
             'click #priority'       : 'togglePriority'
         },
 
-        initialize: function (options) {
+        initialize: function(options) {
             this.model = options.model;
             this.bind('rendered', this.afterRender, this);
             this.delete = false;
         },
 
-        render: function () {
+        render: function() {
             $(this.el).html(this.editTemplate(this.model.toJSON()));
             return this;
         },
 
-        afterRender: function () {
-            if (navigator.mozAlarms) {
+        afterRender: function() {
+            if (navigator.mozAlarms && 'Notification' in window) {
                 $('#reminder').show();
             }
         },
 
-        saveItem: function (e) {
+        saveItem: function(e) {
             e.preventDefault();
 
             var item = $('#edit-field').val();
@@ -364,7 +364,7 @@ $(function () {
             }
         },
 
-        saveOnEnter: function (e) {
+        saveOnEnter: function(e) {
             var text = $('#edit-field').val();
             if (!text || e.keyCode !== 13) {
                 return;
@@ -372,15 +372,15 @@ $(function () {
             this.saveItem(e);
         },
 
-        toggleDone: function () {
+        toggleDone: function() {
             this.model.toggleDone();
         },
 
-        togglePriority: function (e) {
+        togglePriority: function(e) {
             this.model.togglePriority();
         },
 
-        deleteItem: function (e) {
+        deleteItem: function(e) {
             e.preventDefault();
 
             if (confirm('Delete item ' + this.model.get('text') + '?')) {
@@ -390,21 +390,21 @@ $(function () {
             }
         },
 
-        updateReminder: function (id, offset) {
+        updateReminder: function(id, offset) {
 
             // clear any previous reminder before updating
             _reminders.remove(id);
 
             if (offset >= 0) {
-                console.log('setting reminder');
+                //console.log('setting reminder');
                 this.setReminder(offset);
             } else {
-                console.log('closing view without setting reminder');
+                //console.log('closing view without setting reminder');
                 this.saveCloseView();
             }
         },
 
-        setReminder: function (offset) {
+        setReminder: function(offset) {
             var d = $('#reminder-date').val();
             var t = $('#reminder-time').val();
             var date = new Date(d + 'T' + t + ':00');
@@ -424,7 +424,7 @@ $(function () {
             _reminders.add(date, alarmData, offset, this.saveCloseView, this);
         },
 
-        saveCloseView: function (id, offset) {
+        saveCloseView: function(id, offset) {
 
             var item = $('#edit-field').val();
             var notes = $('#notes').val();
@@ -445,7 +445,7 @@ $(function () {
             router.navigate('', {trigger: true});
         },
 
-        destroy: function () {
+        destroy: function() {
             this.unbind();
             this.remove();
         }
@@ -467,14 +467,14 @@ $(function () {
             'keypress .edit-list'       : 'settingsOnEnter'
         },
 
-        initialize: function (options) {
+        initialize: function(options) {
             this.collection = options.collection;
             this.listenTo(this.collection, 'add', this.addOne);
             this.listenTo(this.collection, 'reset', this.addAll);
             this.listenTo(this.collection, 'all', this.render);
         },
 
-        render: function () {
+        render: function() {
             var length = this.collection.length;
             this.$('#todo-stats').html(this.statsTemplate({
                 total:      length,
@@ -490,17 +490,17 @@ $(function () {
             return this;
         },
 
-        addOne: function (item) {
+        addOne: function(item) {
             var itemView = new ItemView({model: item});
             $('#todo-list').append(itemView.render().el);
         },
 
-        addAll: function () {
+        addAll: function() {
             $(this.el).html(this.listTemplate());
             this.collection.each(this.addOne);
         },
 
-        createOnEnter: function (e) {
+        createOnEnter: function(e) {
             var input = $('#new-item-name'),
                 text = input.val();
             if (!text || e.keyCode !== 13) { return; }
@@ -509,16 +509,16 @@ $(function () {
             input.val('').blur();
         },
 
-        openSettings: function () {
+        openSettings: function() {
             router.navigate('edit-list', {trigger: true});
         },
 
-        settingsOnEnter: function (e) {
+        settingsOnEnter: function(e) {
             if (e.keyCode !== 13) { return; }
             router.navigate('edit-list', {trigger: true});
         },
 
-        destroy: function () {
+        destroy: function() {
             this.remove();
         }
 
@@ -526,19 +526,26 @@ $(function () {
 
     var _reminders = {
 
-        bind: function () {
+        bind: function() {
             var img = window.location.origin + '/checklist/images/fx-app-icon-128.png';
-            if (navigator.mozAlarms && 'Notification' in window) {
+            if (navigator.mozAlarms && navigator.mozSetMessageHandler && 'Notification' in window) {
                 navigator.mozSetMessageHandler('alarm', function(message) {
-                    new Notification('Checklist', {
+
+                    // launch notification
+                    var notification = new Notification('Checklist', {
                         body: message.data.text,
                         icon: img
                     });
+
+                    // vibrate for 500ms
+                    if (navigator.vibrate) {
+                        navigator.vibrate(500);
+                    }
                 });
             }
         },
 
-        add: function (date, data, offset, callback, context) {
+        add: function(date, data, offset, callback, context) {
             var request;
 
             if (navigator.mozAlarms) {
@@ -568,20 +575,20 @@ $(function () {
             }
         },
 
-        remove: function (id) {
+        remove: function(id) {
             if (navigator.mozAlarms && id) {
                 // console.log('removing reminder: ' + id);
                 navigator.mozAlarms.remove(id);
             }
         },
 
-        removeAll: function () {
+        removeAll: function() {
             var alarms;
 
             if (navigator.mozAlarms) {
                 alarms = navigator.mozAlarms.getAll();
 
-                alarms.onsuccess = function () {
+                alarms.onsuccess = function() {
                     if (this.result.length) {
                         this.result.forEach(function (reminder) {
                             // console.log('removing reminder: ' + reminder.id);
@@ -590,7 +597,7 @@ $(function () {
                     }
                 };
 
-                alarms.onerror = function (error) {
+                alarms.onerror = function(error) {
                     console.log(error);
                 };
             }
@@ -602,7 +609,7 @@ $(function () {
     var router = new AppRouter({collection: items, appView: appView});
 
     // hack to enable active pseudo styles in iOS Safari
-    document.addEventListener('touchstart', function() {},false);
+    document.addEventListener('touchstart', function() {}, false);
 
     Backbone.history.start();
     _reminders.bind();

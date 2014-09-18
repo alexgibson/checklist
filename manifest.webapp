@@ -30,7 +30,11 @@
         }
     },
     "messages": [
-        { "notification": "/index.html" },
-        { "alarm": "/checklist/index.html" }
+        {
+            "notification": "checklist/index.html"
+        },
+        {
+            "alarm": "/checklist/index.html"
+        }
     ]
 }
