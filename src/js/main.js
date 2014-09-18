@@ -343,6 +343,7 @@ $(function () {
 
         render: function() {
             $(this.el).html(this.editTemplate(this.model.toJSON()));
+            this.setTitle();
             return this;
         },
 
@@ -350,6 +351,11 @@ $(function () {
             if (navigator.mozAlarms && 'Notification' in window) {
                 $('#reminder').show();
             }
+        },
+
+        setTitle: function() {
+            var text = this.model.escape('text');
+            this.$('h1').html(text);
         },
 
         saveItem: function(e) {
