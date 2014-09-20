@@ -1,23 +1,31 @@
 Checklist
 =========
 
-An easy to use web app for creating quick to-do or shopping lists.
+A single, focused to-do list with a clean and simple user interface. Checklist focuses on simplicity, whilst offering more advanced features such as scheduled reminders and item prioritization.
 
-Checklist is designed primarily for Firefox OS and is optimised for mobile touch devices, but also runs on most modern desktop browsers.
+Checklist is designed primarily for Firefox OS and optimised for small screen touch devices, but also runs on most modern desktop browsers.
+
+Available on Firefox Marketplace: 
+https://marketplace.firefox.com/app/checklist
+
+Also available online at:
+http://alxgbsn.co.uk/checklist/
 
 Features
 --------
 
-- Add, edit & delete items.
-- Flag & order by high priority items.
-- Completed & remaining item count.
-- Share your checklist via email.
-- List management features.
-- Fully keyboard accessible.
-- Works offline.
+* Add, edit & delete items.
+* Flag & order high priority items.
+* Schedule reminder notifications.
+* Add additional notes to items.
+* Completed & remaining item count.
+* List management features.
+* Share your list via email.
+* Fully keyboard accessible.
+* Works offline
 
-License
--------
+MIT License
+-----------
 
 Copyright (c) 2014 Alex Gibson
 
