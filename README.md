@@ -1,9 +1,11 @@
 Checklist
 =========
 
-A single, focused to-do list with a clean and simple user interface. Checklist focuses on simplicity, whilst offering more advanced features such as scheduled reminders and item prioritization.
+A single, focused mobile to-do list. Checklist focuses on simplicity, whilst still offering more advanced features such as scheduled reminders and item prioritization.
 
-Checklist is designed primarily for Firefox OS and optimised for small screen touch devices, but also runs on most modern desktop browsers.
+This application is designed & built primarily for Firefox OS, but also runs on other platforms such as iOS and Android.
+
+Please note the reminders & notification features are currently only available to users on Firefox OS 1.3 and above.
 
 Available on Firefox Marketplace: 
 https://marketplace.firefox.com/app/checklist
