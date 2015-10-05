@@ -7,11 +7,7 @@ This application is designed & built primarily for Firefox OS, but also runs on 
 
 Please note the reminders & notification features are currently only available to users on Firefox OS 1.3 and above.
 
-Available on Firefox Marketplace: 
-https://marketplace.firefox.com/app/checklist
-
-Also available online at:
-http://alxgbsn.co.uk/checklist/
+https://alexgibson.github.io/checklist/
 
 Features
 --------
